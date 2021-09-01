@@ -1,5 +1,6 @@
 # Indroduction to CP2K day 1
 
+## About this course
 
 ## About CP2K
 
@@ -10,13 +11,19 @@ Question: User experiance of CP2K, other similar packages, research interests
 ### Main features
 
 
-## Running CP2K
+## Exercise 0: Logging on to ARCHER2 and setting up
+
+
 
 ## The CP2K input file
 
 ## The CP2K manual
 
-## Basis sets, pesuedoptoentails files
+## Running CP2K
+
+### Basis sets, pesuedoptoentails files
+
+### Output files
 
 ## Exercise 1: Calculating energy/forces
 
