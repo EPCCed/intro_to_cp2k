@@ -16,7 +16,15 @@ however it also aim to be useful to a user with basic experienace.
 While we will be referencing denisty functional theory and other theoretical methods understanding of these is not the principal aim of this course.
 Our aim is to use these systems to help familiarise attendees with using CP2K to run simulations. 
 
-
+* What can CP2K do
+* Understanding the input file
+* Input file preparation
+* Running CP2K jobs and understanding the outputs
+* Key parameters and ensuring accuracy
+* Getting good performance
+* Common pitfalls and problems
+* How to start with your own simulations and where to find guidence
+* Practicals: Energy miniminisation, geometry optimiation, molecular dynamics
 
 ## About CP2K
 
