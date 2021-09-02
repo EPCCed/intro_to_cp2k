@@ -34,12 +34,12 @@ CP2K provides a general framework for running density functional theory (DFT) si
 extensions that enable users to run classical molecular dynamics (MD), mix MD and DFT to obtain
 quantum-mechanical/molecular-dynamics (QM/MM) runs, or perform other forms of metadynamics, Monte Carlo, or other simulations.
 
-Key links
+** Key links **
 
-https://www.cp2k.org - The CP2K website
-https://manual.cp2k.org -  The CP2K manunal
-https://github.com/cp2k/cp2k -  The CP2K github page
-https://docs.archer2.ac.uk/research-software/cp2k/cp2k/ - CP2K on ARCHER2
+* https://www.cp2k.org - The CP2K website
+* https://manual.cp2k.org -  The CP2K manunal
+* https://github.com/cp2k/cp2k -  The CP2K github page
+* https://docs.archer2.ac.uk/research-software/cp2k/cp2k/ - CP2K on ARCHER2
 
 
 ### Questions
