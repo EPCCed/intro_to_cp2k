@@ -137,7 +137,14 @@ Some of the main sections are as follows:
 
 ```
 
-Now taking a look at the input file for the first exercise (a force/energy calculation of XXX).
+### The Global section
+
+### Printing
+
+### Units
+
+
+Now take a look at the input file for the first exercise (a force/energy calculation of XXX).
 
 ```
 cat input.inp
