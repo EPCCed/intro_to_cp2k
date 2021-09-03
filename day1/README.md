@@ -60,25 +60,36 @@ Gaussian and Plane Waves Method
 
 #### GAPW
 
+
 #### Hartree Fock exchange
 
+Used in hybrid exchange correlation functionals such as B3LYP and PBE0, and double-hybrid functionals.
 
 #### Linear scaling DFT
 
-#### XC functional
+#### XC functionals
 
-#### Geometry optimisation
+LDA, GGA, meta-GGA. And many others provided by LibXC.
 
-#### MD
+####  Optimisation
+
+Global and  geometry optimisation
+
+#### Molecular dynamics
+
+Born Orpenheimer 
 
 #### QM/MM
 
-#### FIST
 
-#### NEB
+
+#### Classical forcefields FIST
+
+#### The nudged elastic band method (NEB)
 
 #### Metadynamics
 
+Available in CP2K inbuild or through Plumed
 
 
 
