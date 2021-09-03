@@ -52,14 +52,108 @@ TODO: Add etherpad link
 
 ### CP2K Main features
 
+#### Quickstep
+
+Gaussian and Plane Waves Method
+
+#### Obital transform method
+
+#### GAPW
+
+#### Hartree Fock exchange
+
+
+#### Linear scaling DFT
+
+#### XC functional
+
+#### Geometry optimisation
+
+#### MD
+
+#### QM/MM
+
+#### FIST
+
+#### NEB
+
+#### Metadynamics
+
+
+
 
 ## Exercise 0: Logging on to ARCHER2 and setting up
+
+Information about setting up an account, ssh key pair and logging on to ARCHER2 can be found here: https://docs.archer2.ac.uk/quick-start/quickstart-users/
+
+Once you have logged into ARCHER2 you will need to do some steps to set for the practicals.
+
+```
+cd /work/ta0XX/ta0XX/username
+wget XXXX
+cd practicals/excercise0
+```
 
 
 
 ## The CP2K input file
 
+The CP2K input file contains the information about your system, the calculation details, and important parameters and required dataset files.
+
+It is broken down into nested sections which contain parameters for different properties. 
+
+Each section begins with the '&' symbol and must be ended with a &END statement.
+
+Sections can contain keywords, which assign a value to that keyword, eg. METHOD below
+
+The lower level sections and keywords must appear in the correct parent section, but the order is not important.
+
+Indentation is usually done for readability but is not necessary to get it to run.
+
+
+
+
+Some of the main sections are as follows:
+
+```
+&FORCE_EVAL
+   # contains information about the system set up including DFT options, forcefield settings, atomic coordinates and kinds
+   METHOD XXXX # Method used to compute forces (e.g. QS, QMMM, FIST SIRIUS..)
+   &DFT
+
+   # parameters for the DFT calculation, including MGRID, QS, SCF, XC settings
+   
+   
+   &END DFT
+
+   &QMMM
+
+   &END QMMM
+   
+   &SUBSYS
+&END FORCE_EVAL
+
+
+
+```
+
+Now taking a look at the input file for the first exercise (a force/energy calculation of XXX).
+
+```
+cat input.inp
+```
+
 ## The CP2K manual
+
+The manual is available here:
+
+Follows the same layout as the input file.
+
+To be used as more of a guide as to what the parameters mean rather than instructions on how to set up your input file.
+
+Helpful to also see the different options available.
+
+
 
 ## Running CP2K
 
