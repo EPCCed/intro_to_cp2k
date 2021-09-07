@@ -34,12 +34,12 @@ CP2K provides a general framework for running density functional theory (DFT) si
 extensions that enable users to run classical molecular dynamics (MD), mix MD and DFT to obtain
 quantum-mechanical/molecular-dynamics (QM/MM) runs, or perform other forms of metadynamics, Monte Carlo, or other simulations.
 
-** Key links **
+**Key links**
 
-* https://www.cp2k.org - The CP2K website
-* https://manual.cp2k.org -  The CP2K manunal
-* https://github.com/cp2k/cp2k -  The CP2K github page
-* https://docs.archer2.ac.uk/research-software/cp2k/cp2k/ - CP2K on ARCHER2
+* [The CP2K website](https://www.cp2k.org)
+* [The CP2K manual](https://manual.cp2k.org)
+* [The CP2K Github page](https://github.com/cp2k/cp2k)
+* [CP2K ARCHER2 documentation](https://docs.archer2.ac.uk/research-software/cp2k/cp2k/) 
 
 
 ### Attendee questions
@@ -50,7 +50,7 @@ TODO: Add etherpad link
 * Have you used any other similar packages (VASP, Quantum Espresso, CASTEP, Siesta)?
 * What is your research area?
 
-### CP2K Main features
+### CP2K main features
 
 #### Quickstep
 
@@ -77,13 +77,15 @@ Global and  geometry optimisation
 
 #### Molecular dynamics
 
-Born Orpenheimer 
+Born Orpenheimer molecule dyamics, with a range of ensembles.
 
 #### QM/MM
 
 
 
 #### Classical forcefields FIST
+
+Classical forcefields in the CHARMM and AMBER formats.
 
 #### The nudged elastic band method (NEB)
 
@@ -102,24 +104,33 @@ Once you have logged into ARCHER2 you will need to do some steps to set for the 
 ```
 cd /work/ta0XX/ta0XX/username
 wget XXXX
-cd practicals/excercise0
+cd practicals/exercise0
 ```
 
 
 
 ## The CP2K input file
 
-The CP2K input file contains the information about your system, the calculation details, and important parameters and required dataset files.
+The CP2K input file contains the information about your system, the calculation details, important parameters and required dataset files.
 
-It is broken down into nested sections which contain parameters for different properties. 
+It is broken down into nested sections which contain parameters for different properties and looks something like this.
 
-Each section begins with the '&' symbol and must be ended with a &END statement.
+```
+&SECTION
+  &SECTION
+    VARIABLE set_variable
+    ...
+  &END SECTION
+&END SECTION
+```
 
-Sections can contain keywords, which assign a value to that keyword, eg. METHOD below
+* Each section name begins with the `&` symbol and must be ended with a &END statement - e.g. `&SECTION`
+* Sections can contain keywords, which assign a value to that keyword - e.g. `VARIABLE`
+* The lower level sections and keywords must appear in the correct parent section, but the order of sections is not important.
+* Indentation is usually done for readability but is not necessary.
+* Comments can be made with either the `!` or `#` symbols
 
-The lower level sections and keywords must appear in the correct parent section, but the order is not important.
 
-Indentation is usually done for readability but is not necessary to get it to run.
 
 
 
@@ -127,38 +138,68 @@ Indentation is usually done for readability but is not necessary to get it to ru
 Some of the main sections are as follows:
 
 ```
-&FORCE_EVAL
-   # contains information about the system set up including DFT options, forcefield settings, atomic coordinates and kinds
-   METHOD XXXX # Method used to compute forces (e.g. QS, QMMM, FIST SIRIUS..)
-   &DFT
+&GLOBAL            # global settings for the simulation
+   PROJECT      .. # the project name
+   RUN_TYPE     .. # run type (e.g. MD, ENERGY, BAND, GEO_OPT..)
+   PRINT_LEVEL  .. # the verbosity of the output (SILENT, LOW, MEDIUM, HIGH)
+&END GLOBAL
 
-   # parameters for the DFT calculation, including MGRID, QS, SCF, XC settings
+&FORCE_EVAL        # contains information about the system set up including DFT options, forcefield settings, atomic coordinates and kinds
+   METHOD XXXX     # Method used to compute forces (e.g. QS, QMMM, FIST SIRIUS..)
+   &DFT            # parameters for the DFT calculation
+       BASIS_SET_FILE_NAME  ..     # filename for the basis sets
+       POTENTIAL_FILE_NAME  ..     # filename for the potential
+       &SCF        # SCF parameters
+       ..
+       &END SCF
+       
+       &MGRID      # Multigrid information
+       ..
+       &END MGRID
+       
+       &QS         # Quickstep parameters
+       ..
+       &END QS
    
-   
+       &XC         # exchange-correlation settings
+       ..
+       &END XC
    &END DFT
 
-   &QMMM
-
-   &END QMMM
-   
-   &SUBSYS
+   &SUBSYS 
+       &CELL       # The dimensions of the simulation cell
+       ..
+       &END CELL
+       
+       &COORD      # List of atomic coordinates
+       ..
+       &END COORD
+       
+       &KIND       # Atomic kind information
+           ELEMENT    ..
+           BASIS_SET  ..
+           POTENTIAL  ..
+       &END 
 &END FORCE_EVAL
 
-
-
+&MOTION            # settings for any atomic movement (e.g. MD, NEB, optimisations, MC)
+..
+&END MOTION
 ```
 Now take a look at the input file for the first exercise (a force/energy calculation of XXX).
 
 ```
 cat input.inp
+
+
 ```
 
 We have to set up calculation type as `ENERGY_FORCE` in the `&GLOBAL` section:
 
 ```
 &GLOBAL
-  PROJECT SI_0        ! Name of the calculation
-  PRINT_LEVEL LOW     ! Verbosity of the output
+  PROJECT Si_bulk          ! Name of the calculation
+  PRINT_LEVEL LOW          ! Verbosity of the output
   RUN_TYPE ENERGY_FORCE    ! Calculation type: Geometry optimisation
 &END GLOBAL
 ```
@@ -181,60 +222,86 @@ plane waves are defined.
 [Kohn-Sham](https://en.wikipedia.org/wiki/Kohn%E2%80%93Sham_equations) DFT 
 formalism are defined.
 
-## The CP2K manual
+### The CP2K manual
 
-The manual is available here:
+The CP2K manual is available [here](https://manual.cp2k.org/#gsc.tab=0)
 
-Follows the same layout as the input file.
+* It follows the same layout as the input file, you can click into sections to see the sections/parameters in that section.
+* It should be used as a guide as to what the input parameters mean rather than instructions on how to set up your input file.
+* It can also be helpful for seeing the different settings that are available.
 
-To be used as more of a guide as to what the parameters mean rather than instructions on how to set up your input file.
+### Input file tips
 
-Helpful to also see the different options available.
-
-## Input file tips
-
-### Printing
+#### Printing
 
 The general verbosity of the output is controlled by the `PRINT_LEVEL` command in the 
 GLOBAL section. However you may want to print more information about particular properties
 than others. This can be done by adding a &PRINT section within the input file section. eg.
 
 ```
-&PRINT
+&MOTION
+   &PRINT
+      &TRAJECTORY
+         &EACH
+            MD 1
+         &END EACH
+         FILENAME traj.xyz
+         FORMAT xyz
+      &END TRAJECTORY
+   &END PRINT
+&END MOTION
+    
 ```
 
 Again this has the options `SILENT, LOW, MEDIUM, HIGH` and also allows you to specify a filename
 for the output and how regular it is written to.
 
-### Units
+#### Units
 
 The defult units for CP2K can be quite unfamiliar. Always check 
 what the default units are if you specifying a parameter  otherwise its value may be misinterpretted.
 Alternatively you can add a unit descriptor to the input file to tell CP2K what the units are.
 
 ```
-
+CUTOFF [eV] 400
 
 ```
-You can check (https://manual.cp2k.org/cp2k-8_2-branch/units.html) to tell what units are valid for different physical values.
+You can check [the manual](https://manual.cp2k.org/cp2k-8_2-branch/units.html) to see what units are valid for different physical values.
 
-### Using varaibles
+#### Using varaibles
 
-### Including files
+Variables in the input file can be defined with:
+```
+@SET VAR value
+```
+and then used with:
+```
+$VAR
+```
+This can be useful for changing systems properties easily e.g. cell dimensions.
+
+#### Including files
+
+Text from files can be included with:
+```
+@include `filename`
+```
 
 
 ## Running CP2K
 
-On most HPC systems (including ARCHER2) CP2K can be found as a module file. Typing module avail cp2k
+On most HPC systems (including ARCHER2) CP2K can be found as a module file. Typing `module avail cp2k`
 gives a list of the available CP2K versions.
 
+```
 module load cp2k/8.1
+```
 
 Will make the CP2K exectuables for version 8.1 available.
 
-CP2K has two executables for running in parallel. cp2k.popt is the parallelised exectuable for running MPI-only 
-(e.g. no OpenMP/threading). cp2k.psmp is the mixed mode parallelised MPI+OpenMP executable. Since version 7.1
-cp2k.popt is just a symbolic link of cp2k.psmp with a single thread. In this tutorial we will be using cp2k.psmp.
+CP2K has two executables for running in parallel. `cp2k.popt` is the parallelised exectuable for running MPI-only 
+(e.g. no OpenMP/threading). `cp2k.psmp` is the mixed mode parallelised MPI+OpenMP executable. Since version 7.1
+`cp2k.popt` is a symbolic link of `cp2k.psmp` with a single thread. In this tutorial we will be using cp2k.psmp.
 
 We have provide job submission scripts for running each of the exercises on the compute nodes of ARCHER2. 
 These look like this:
@@ -244,7 +311,11 @@ job script
 ```
 
 
+Jobs can be submitted with
 
+```
+sbatch cp2k-job.sh
+```
 
 ### Basis sets, pesuedoptoentails files
 
