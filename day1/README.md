@@ -4,14 +4,14 @@
 
 This course is designed to teach attendees how to run basic CP2K calculations and give them the key knowledge
 required for doing so. It will cover the important  
-options in the CP2K input file, before undergoing practical sessions on running 
-CP2K simulations. 
+options in the CP2K input file and how to set up a CP2K calulcation before gooing through some practical examples.
 
-We will also cover a selection of helpful tips and tricks, and where to find guidance and
+We will also cover a selection of helpful tips and how to deal with comman problems encountered when using CP2K.
+and where to find guidance and
 help preparing input files
 
 This course will assume no prior experiance of using CP2K or other atomistic simulation packages
-however it also aim to be useful to a user with basic experienace.
+however it will also  aim to be useful to those who have some experiance of using CP2K.
 
 While we will be referencing denisty functional theory and other theoretical methods understanding of these is not the principal aim of this course.
 Our aim is to use these systems to help familiarise attendees with using CP2K to run simulations. 
@@ -42,7 +42,7 @@ quantum-mechanical/molecular-dynamics (QM/MM) runs, or perform other forms of me
 * https://docs.archer2.ac.uk/research-software/cp2k/cp2k/ - CP2K on ARCHER2
 
 
-### Questions
+### Attendee questions
 
 TODO: Add etherpad link
 
@@ -216,6 +216,8 @@ Alternatively you can add a unit descriptor to the input file to tell CP2K what 
 
 
 ```
+You can check (https://manual.cp2k.org/cp2k-8_2-branch/units.html) to tell what units are valid for different physical values.
+
 ### Using varaibles
 
 ### Including files
