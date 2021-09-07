@@ -147,19 +147,39 @@ Some of the main sections are as follows:
 
 
 ```
-
-### The Global section
-
-### Printing
-
-### Units
-
-
 Now take a look at the input file for the first exercise (a force/energy calculation of XXX).
 
 ```
 cat input.inp
 ```
+
+We have to set up calculation type as `ENERGY_FORCE` in the `&GLOBAL` section:
+
+```
+&GLOBAL
+  PROJECT SI_0        ! Name of the calculation
+  PRINT_LEVEL LOW     ! Verbosity of the output
+  RUN_TYPE ENERGY_FORCE    ! Calculation type: Geometry optimisation
+&END GLOBAL
+```
+
+In the `&FORCE_EVAL` section, we define the basic system definitions (such as 
+topology and coordinates). Here we are only going to explain the most important 
+ones:
+- `METHOD QS` : QUICKSTEP is the QM method in CP2K ([link](https://www.cp2k.org/quickstep)).
+- In the `&SUBSYS` subsection, we define several parameters of the system. 
+  - `&CELL` defines the simulation box size that will contain all QM atoms.
+  - `&COORD` defines the starting coordinates of the QM atoms. 
+- In the `&DFT` subsection, we define several parameters of the density 
+functional theory (DFT) basis set
+  - `&QS` subsection where QUICKSTEP parameters are set. Amongst other things, 
+we need to specify which QS method we are using (in this case `METHOD PM3`).
+  - `&MGRID` subsection where parameters for calculating the Gaussian 
+plane waves are defined.
+  - `&SCF` subsection where parameters for finding a self-consistent solution 
+(SCF) of the 
+[Kohn-Sham](https://en.wikipedia.org/wiki/Kohn%E2%80%93Sham_equations) DFT 
+formalism are defined.
 
 ## The CP2K manual
 
@@ -171,11 +191,62 @@ To be used as more of a guide as to what the parameters mean rather than instruc
 
 Helpful to also see the different options available.
 
+## Input file tips
+
+### Printing
+
+The general verbosity of the output is controlled by the `PRINT_LEVEL` command in the 
+GLOBAL section. However you may want to print more information about particular properties
+than others. This can be done by adding a &PRINT section within the input file section. eg.
+
+```
+&PRINT
+```
+
+Again this has the options `SILENT, LOW, MEDIUM, HIGH` and also allows you to specify a filename
+for the output and how regular it is written to.
+
+### Units
+
+The defult units for CP2K can be quite unfamiliar. Always check 
+what the default units are if you specifying a parameter  otherwise its value may be misinterpretted.
+Alternatively you can add a unit descriptor to the input file to tell CP2K what the units are.
+
+```
+
+
+```
+### Using varaibles
+
+### Including files
 
 
 ## Running CP2K
 
+On most HPC systems (including ARCHER2) CP2K can be found as a module file. Typing module avail cp2k
+gives a list of the available CP2K versions.
+
+module load cp2k/8.1
+
+Will make the CP2K exectuables for version 8.1 available.
+
+CP2K has two executables for running in parallel. cp2k.popt is the parallelised exectuable for running MPI-only 
+(e.g. no OpenMP/threading). cp2k.psmp is the mixed mode parallelised MPI+OpenMP executable. Since version 7.1
+cp2k.popt is just a symbolic link of cp2k.psmp with a single thread. In this tutorial we will be using cp2k.psmp.
+
+We have provide job submission scripts for running each of the exercises on the compute nodes of ARCHER2. 
+These look like this:
+
+```
+job script
+```
+
+
+
+
 ### Basis sets, pesuedoptoentails files
+
+In the input file above we have set it to import parameters for the basis set and pseudopotneila files. 
 
 ### Output files
 
