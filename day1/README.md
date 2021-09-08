@@ -6,33 +6,32 @@ CP2K is a quantum chemistry package for performing atomistic simulations which h
 CP2K is used for wide variety of systems such as solid state systems, molecules, liquids and biological systems.
 It is optimized for the mixed Gaussian and Plane-Waves (GPW) method based on pseudopotentials, 
 but is able to run all-electron or pure plane-wave/Gaussian calculations as well. 
-It has a range of different features which means it can be used for many applications.
 
 This course is designed to teach attendees how to run basic CP2K calculations and give them the key knowledge
 required for doing so. It will cover the important options in the CP2K input file and how to set up a CP2K
-calculation before going through some practical examples.
+calculation before going through some hands-on practical exercises.
 
 We will also cover a selection of helpful tips and how to deal with common problems encountered when using CP2K with your own system.
 This will include stratergies for creating your own input file and where to find guidance and help with preparing input files.
 
 This course will assume no prior experiance of using CP2K or other atomistic simulation packages
-however it will also aim to be useful to those who have some experiance of using CP2K. We  expect
+however it will also aim to be useful to those who have some basic experiance of using CP2K. We expect
 attendees to have some understanding of the key theoretical methods used in CP2K (i.e. density functional theory and electronic structure calculations)
-and experiance of using ssh, the command line and HPC machines (such as ARCHER2).
+and experiance of using ssh, the command line and some familiarity with using HPC machines (such as ARCHER2).
 
 While we will be referencing denisty functional theory and other theoretical methods understanding of these is not the principal aim of this course.
 Our aim is to help familiarise attendees with using CP2K to run simulations. 
 
-Topics that will be covered:
+Topics that will be covered are:
 
 * What can CP2K do
-* Understanding the input file
+* Understanding the CP2K input file
 * Input file preparation
 * Running CP2K jobs and understanding the outputs
 * Key parameters and ensuring accuracy
 * Getting good performance
 * Common pitfalls and problems
-* How to start with your own simulations and where to find guidence
+* How to start with running your own simulations and where to find guidence
 * Practicals: Energy miniminisation, energy cut-off convergence, geometry optimiation, molecular dynamics
 
 ## About CP2K
@@ -120,28 +119,31 @@ cd practicals/exercise0
 
 ## The CP2K input file
 
-The CP2K input file contains the information about your system, the calculation details, important parameters and required dataset files.
+The CP2K input file contains the information about your system, the calculation details, important parameters and any required dataset files.
 
-It is broken down into nested sections which contain parameters for different properties and looks something like this.
+The format is broken down into nested sections which contain parameters for different properties and looks something like this.
 
 ```
+! Parent section
 &SECTION
-  &SECTION
-    VARIABLE set_variable
+  ! subsection 
+  &SECTION1
+    VARIABLE1 value    ! this is a variable
     ...
-  &END SECTION
+  &END SECTION1
+  ! another subsection
+  &SECTION2
+    VARIABLE2 value
+    ...
+  &END SECTION2
 &END SECTION
 ```
 
-* Each section name begins with the `&` symbol and must be ended with a &END statement - e.g. `&SECTION`
-* Sections can contain keywords, which assign a value to that keyword - e.g. `VARIABLE`
+* Each section name begins with the `&` symbol and must be ended with a `&END` statement - e.g. `&SECTION, &END SECTION`
+* Sections can contain keywords, which assign a value to that keyword - e.g. `VARIABLE value`
 * The lower level sections and keywords must appear in the correct parent section, but the order of sections is not important.
-* Indentation is usually done for readability but is not necessary.
+* Indentation is usually done for readability but is not strictly necessary.
 * Comments can be made with either the `!` or `#` symbols
-
-
-
-
 
 
 Some of the main sections are as follows:
@@ -209,7 +211,7 @@ We have to set up calculation type as `ENERGY_FORCE` in the `&GLOBAL` section:
 &GLOBAL
   PROJECT Si_bulk          ! Name of the calculation
   PRINT_LEVEL LOW          ! Verbosity of the output
-  RUN_TYPE ENERGY_FORCE    ! Calculation type: Geometry optimisation
+  RUN_TYPE ENERGY_FORCE    ! Calculation type: energy and forces
 &END GLOBAL
 ```
 
@@ -235,11 +237,18 @@ formalism are defined.
 
 The CP2K manual is available [here](https://manual.cp2k.org/#gsc.tab=0)
 
-* It follows the same layout as the input file, you can click into sections to see the sections/parameters in that section.
+* It follows the same layout as the input file, you can click into sections to see the sections/parameters for that section.
 * It should be used as a guide as to what the input parameters mean rather than instructions on how to set up your input file.
 * It can also be helpful for seeing the different settings that are available.
 
 ### Input file tips
+
+#### Default values
+
+A lot of parameters have default values which they are set if no value is given for them in the input file. This may seem handy but it can be
+dangerous to take the default value in a lot of cases as this can lead to inaccurate results. You should question the default values and 
+check that they are suitable for your system. One key value which should always be set for accuracy is the energy cutoff (link). This
+will be done in the second exercise.
 
 #### Printing
 
@@ -310,9 +319,10 @@ Will make the CP2K exectuables for version 8.1 available.
 
 CP2K has two executables for running in parallel. `cp2k.popt` is the parallelised exectuable for running MPI-only 
 (e.g. no OpenMP/threading). `cp2k.psmp` is the mixed mode parallelised MPI+OpenMP executable. Since version 7.1
-`cp2k.popt` is a symbolic link of `cp2k.psmp` with a single thread. In this tutorial we will be using cp2k.psmp.
+`cp2k.popt` is a symbolic link of `cp2k.psmp` with a single thread. In this tutorial we will be using `cp2k.psmp`
+for the practical exercises.
 
-We have provide job submission scripts for running each of the exercises on the compute nodes of ARCHER2. 
+We have provided job submission scripts for running each of the exercises on the compute nodes of ARCHER2. 
 These look like this:
 
 ```
@@ -320,23 +330,80 @@ job script
 ```
 
 
-Jobs can be submitted with
+Jobs can be submitted with:
 
 ```
 sbatch cp2k-job.sh
 ```
 
-### Basis sets, pesuedoptoentails files
+### Basis sets and pseudopotential files
 
-In the input file above we have set it to import parameters for the basis set and pseudopotneila files. 
+In the input file for the first exercise we have defined filenames for the basis sets and pseudopotentials.
+
+    BASIS_SET_FILE_NAME  BASIS_MOLOPT
+    POTENTIAL_FILE_NAME  POTENTIAL
+    &KIND H  
+      ELEMENT H  
+      BASIS_SET DZVP-MOLOPT-GTH
+      POTENTIAL GTH-PBE
+    &END KIND
+
+The `BASIS_SET` and `POTENTIAL` options will correspond to one of the basis sets and potenials for the particular element within the basis set and potential files. 
+Note that there is usually no need to supply the basis set file directly in your current directory as these are 
+included automatically from the CP2K data directory path.
+
+On ARCHER2 you can see all the available CP2K basis set and potential files in the following directory:
+
+```
+ls /work/y07/shared/cp2k/cp2k-8.1/data
+```
+You can find you basis sets for each element within these files. For example, if you wanted to find all the hydrogen basis sets within BASIS_MOLOPT you could do:
+
+```
+grep ' H ' /work/y07/shared/cp2k/cp2k-8.1/data/BASIS_MOLOPT
+```
 
 ### Output files
 
+#### Standard output
+
+The main output file will contain the progress of the simulation and will be updated as the run proceeds.
+
+The beginning of the  output contains information about the settings for the run. 
+This gives the important input parameters and details of how CP2K was built and run e.g. the number of
+processes and threads that were specifed when running. 
+
+The report of the calculation then follows in the output file. For the exercise
+
+
+
+#### Restart wavefunction files
+
+Wavefunction files are binary files that contain the wavefunctions obtained from the most recent SCF steps. 
+They are named with the project_name preceeding `‘-RESTART.wfn’`. One is written every SCF step, 
+and if a wavefuntion file of the same name already exists the older version is moved to 
+`NAME-RESTART.wfn.bak-1`, rather than overwritten. This is done for up to three files and so 
+you may see the following files, where the third backup (bak-3) is the oldest.
+
+```
+NAME-RESTART.wfn
+NAME-RESTART.wfn.bak-1
+NAME-RESTART.wfn.bak-2
+NAME-RESTART.wfn.bak-3
+```
+
+Wavefunction restarts are used when restarting a calculation in order to act as a 
+guide for the first SCF step to speed up the calculation. In this case  the SCF_GUESS should be set to ‘restart’
+and the restart file name should be given in the SCF section, or the project names should be the same. Care should 
+be taken that the wavefunction is a suitable guess for the SCF calculation otherwise 
+it may not converge or take longer to.
+
 ## Exercise 1: Calculating energy/forces
 
-Run the calculation using the job script provided
+Run the calculation using the job script provided.
 
-Change the Print level to HIGH and run again
+
+Change the `PRINT_LEVEL` to `HIGH` and run again
 What is added in the output
 
 Restarting SCF
