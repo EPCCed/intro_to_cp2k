@@ -2,17 +2,23 @@
 
 ## About this course
 
+CP2K is a quantum chemistry package for performing atomistic simulations which has a variety of applications and features.
+CP2K is used for wide variety of systems such as solid state systems, molecules, liquids and biological systems.
+It is optimized for the mixed Gaussian and Plane-Waves (GPW) method based on pseudopotentials, 
+but is able to run all-electron or pure plane-wave/Gaussian calculations as well. 
+It has a range of different features which means it can be used for many applications.
+
 This course is designed to teach attendees how to run basic CP2K calculations and give them the key knowledge
-required for doing so. It will cover the important  
-options in the CP2K input file and how to set up a CP2K calulcation before going through some practical examples.
+required for doing so. It will cover the important options in the CP2K input file and how to set up a CP2K
+calculation before going through some practical examples.
 
 We will also cover a selection of helpful tips and how to deal with common problems encountered when using CP2K with your own system.
-This will include strateries for creating your own input file and where to find guidance and help with preparing input files.
+This will include stratergies for creating your own input file and where to find guidance and help with preparing input files.
 
 This course will assume no prior experiance of using CP2K or other atomistic simulation packages
 however it will also aim to be useful to those who have some experiance of using CP2K. We  expect
-attendees to have some understanding of the key theoretical methods used in CP2K and experiance of using the
-command line.
+attendees to have some understanding of the key theoretical methods used in CP2K (i.e. density functional theory and electronic structure calculations)
+and experiance of using ssh, the command line and HPC machines (such as ARCHER2).
 
 While we will be referencing denisty functional theory and other theoretical methods understanding of these is not the principal aim of this course.
 Our aim is to help familiarise attendees with using CP2K to run simulations. 
@@ -34,8 +40,8 @@ Topics that will be covered:
 CP2K is a quantum chemistry and solid state physics software package that can perform
 atomistic simulations of a wide variety of systems, ranging from solid state to biological systems.
 CP2K provides a general framework for running density functional theory (DFT) simulations, with
-extensions that enable users to run classical molecular dynamics (MD), mix MD and DFT to obtain
-quantum-mechanical/molecular-dynamics (QM/MM) runs, or perform other forms of metadynamics, Monte Carlo, or other simulations.
+extensions that enable users to run classical molecular dynamics (MD), 
+quantum-mechanical/molecular-dynamics (QM/MM), and perform other forms of metadynamics, Monte Carlo, or other simulations.
 
 **Key links**
 
@@ -327,6 +333,13 @@ In the input file above we have set it to import parameters for the basis set an
 ### Output files
 
 ## Exercise 1: Calculating energy/forces
+
+Run the calculation using the job script provided
+
+Change the Print level to HIGH and run again
+What is added in the output
+
+Restarting SCF
 
 ## Example usage
 
