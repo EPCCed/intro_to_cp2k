@@ -4,17 +4,20 @@
 
 This course is designed to teach attendees how to run basic CP2K calculations and give them the key knowledge
 required for doing so. It will cover the important  
-options in the CP2K input file and how to set up a CP2K calulcation before gooing through some practical examples.
+options in the CP2K input file and how to set up a CP2K calulcation before going through some practical examples.
 
-We will also cover a selection of helpful tips and how to deal with comman problems encountered when using CP2K.
-and where to find guidance and
-help preparing input files
+We will also cover a selection of helpful tips and how to deal with common problems encountered when using CP2K with your own system.
+This will include strateries for creating your own input file and where to find guidance and help with preparing input files.
 
 This course will assume no prior experiance of using CP2K or other atomistic simulation packages
-however it will also  aim to be useful to those who have some experiance of using CP2K.
+however it will also aim to be useful to those who have some experiance of using CP2K. We  expect
+attendees to have some understanding of the key theoretical methods used in CP2K and experiance of using the
+command line.
 
 While we will be referencing denisty functional theory and other theoretical methods understanding of these is not the principal aim of this course.
-Our aim is to use these systems to help familiarise attendees with using CP2K to run simulations. 
+Our aim is to help familiarise attendees with using CP2K to run simulations. 
+
+Topics that will be covered:
 
 * What can CP2K do
 * Understanding the input file
@@ -24,7 +27,7 @@ Our aim is to use these systems to help familiarise attendees with using CP2K to
 * Getting good performance
 * Common pitfalls and problems
 * How to start with your own simulations and where to find guidence
-* Practicals: Energy miniminisation, geometry optimiation, molecular dynamics
+* Practicals: Energy miniminisation, energy cut-off convergence, geometry optimiation, molecular dynamics
 
 ## About CP2K
 
