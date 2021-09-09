@@ -114,23 +114,30 @@ Available in CP2K inbuild or through Plumed
 
 ## Exercise 0: Logging on to ARCHER2 and setting up
 
-Information about setting up an account, ssh key pair and logging on to ARCHER2 can be found here: https://docs.archer2.ac.uk/quick-start/quickstart-users/
+Information about setting up an account, ssh key pair and logging on to ARCHER2 
+can be found [here](https://docs.archer2.ac.uk/quick-start/quickstart-users/)
 
-Once you have logged into ARCHER2 you will need to do some steps to set for the practicals.
+Once you have logged into ARCHER2 you will need to do some steps to set up for
+the practicals.
 
 ```
+# change to the your work directory
 cd /work/ta0XX/ta0XX/username
+# download the materials
 wget XXXX
-cd practicals/exercise0
+# go to the first exercise
+cd practicals/exercise1
 ```
 
 
 
 ## The CP2K input file
 
-The CP2K input file contains the information about your system, the calculation details, important parameters and any required dataset files.
+The CP2K input file contains the information about your system, the calculation 
+details, important parameters and any required dataset files.
 
-The format is broken down into nested sections which contain parameters for different properties and looks something like this.
+The format is broken down into nested sections which contain parameters for 
+different properties and looks something like this.
 
 ```
 ! Parent section
@@ -256,14 +263,14 @@ The CP2K manual is available [here](https://manual.cp2k.org/#gsc.tab=0)
 
 A lot of parameters have default values which they are set if no value is given for them in the input file. This may seem handy but it can be
 dangerous to take the default value in a lot of cases as this can lead to inaccurate results. You should question the default values and 
-check that they are suitable for your system. One key value which should always be set for accuracy is the energy cutoff (link). This
+check that they are suitable for your system. One key value which should always be set for good accuracy is the energy cutoff (link). This
 will be done in the second exercise.
 
 #### Printing
 
 The general verbosity of the output is controlled by the `PRINT_LEVEL` command in the 
 GLOBAL section. However you may want to print more information about particular properties
-than others. This can be done by adding a &PRINT section within the input file section. eg.
+than others. This can be done by adding a `&PRINT` section within the input file section. eg.
 
 ```
 &MOTION
@@ -281,19 +288,22 @@ than others. This can be done by adding a &PRINT section within the input file s
 ```
 
 Again this has the options `SILENT, LOW, MEDIUM, HIGH` and also allows you to specify a filename
-for the output and how regular it is written to.
+for the output and how regularly it is written to.
 
 #### Units
 
-The defult units for CP2K can be quite unfamiliar. Always check 
-what the default units are if you specifying a parameter  otherwise its value may be misinterpretted.
-Alternatively you can add a unit descriptor to the input file to tell CP2K what the units are.
+The default units for CP2K can be quite unfamiliar. In a lot of cases atomic units
+are the default. Always check what the default units are if you specifying a 
+parameter otherwise its value may be misinterpretted.
+Alternatively you can add a unit descriptor to the input file to tell CP2K what 
+the units are.
 
 ```
 CUTOFF [eV] 400
 
 ```
-You can check [the manual](https://manual.cp2k.org/cp2k-8_2-branch/units.html) to see what units are valid for different physical values.
+You can check [the manual](https://manual.cp2k.org/cp2k-8_2-branch/units.html)
+to see what units are valid for different physical values.
 
 #### Using varaibles
 
@@ -317,8 +327,8 @@ Text from files can be included with:
 
 ## Running CP2K
 
-On most HPC systems (including ARCHER2) CP2K can be found as a module file. Typing `module avail cp2k`
-gives a list of the available CP2K versions.
+On most HPC systems (including ARCHER2) CP2K can be found as a module file. 
+Typing `module avail cp2k` gives a list of the available CP2K versions.
 
 ```
 module load cp2k/8.1
@@ -347,7 +357,8 @@ sbatch cp2k-job.sh
 
 ### Basis sets and pseudopotential files
 
-In the input file for the first exercise we have defined filenames for the basis sets and pseudopotentials.
+In the input file for the first exercise we have defined filenames for the basis 
+sets and pseudopotentials.
 
     BASIS_SET_FILE_NAME  BASIS_MOLOPT
     POTENTIAL_FILE_NAME  POTENTIAL
@@ -357,16 +368,19 @@ In the input file for the first exercise we have defined filenames for the basis
       POTENTIAL GTH-PBE
     &END KIND
 
-The `BASIS_SET` and `POTENTIAL` options will correspond to one of the basis sets and potenials for the particular element within the basis set and potential files. 
-Note that there is usually no need to supply the basis set file directly in your current directory as these are 
-included automatically from the CP2K data directory path.
+The `BASIS_SET` and `POTENTIAL` options will correspond to one of the basis sets
+and potenials for the particular element within the basis set and potential files. 
+Note that there is usually no need to supply the basis set file directly in your
+current directory as these are included automatically from the CP2K data directory path.
 
-On ARCHER2 you can see all the available CP2K basis set and potential files in the following directory:
+On ARCHER2 you can see all the available CP2K basis set and potential files in
+the following directory:
 
 ```
 ls /work/y07/shared/cp2k/cp2k-8.1/data
 ```
-You can find you basis sets for each element within these files. For example, if you wanted to find all the hydrogen basis sets within BASIS_MOLOPT you could do:
+You can find you basis sets for each element within these files. For example, if
+you wanted to find all the hydrogen basis sets within BASIS_MOLOPT you could do:
 
 ```
 grep ' H ' /work/y07/shared/cp2k/cp2k-8.1/data/BASIS_MOLOPT
@@ -379,8 +393,7 @@ grep ' H ' /work/y07/shared/cp2k/cp2k-8.1/data/BASIS_MOLOPT
 The main output file will contain the progress of the simulation and will be updated as the run proceeds.
 
 The beginning of the  output contains information about the settings for the run. 
-This gives the important input parameters and details of how CP2K was built and run e.g. the number of
-processes and threads that were specifed when running. 
+This gives the important input parameters and details of how CP2K was built and run.
 
 The report of the calculation then follows in the output file. For the exercise
 
