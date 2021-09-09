@@ -32,15 +32,15 @@ is to help familiarise attendees with using CP2K to run simulations.
 
 Topics that will be covered are:
 
-•	What can CP2K do
-•	Understanding the CP2K input file
-•	Input file preparation
-•	Running CP2K jobs and understanding the outputs
-•	Key parameters and ensuring accuracy
-•	Getting good performance
-•	Common pitfalls and problems
-•	How to start with running your own simulations and where to find guidance
-•	Practicals: Energy minimisation, energy cut-off convergence, geometry optimisation, molecular dynamics
+* What can CP2K do
+* Understanding the CP2K input file
+* Input file preparation
+* Running CP2K jobs and understanding the outputs
+* Key parameters and ensuring accuracy
+* Getting good performance
+* Common pitfalls and problems
+* How to start with running your own simulations and where to find guidance
+* Practicals: Energy minimisation, energy cut-off convergence, geometry optimisation, molecular dynamics
 
 
 ## About CP2K
