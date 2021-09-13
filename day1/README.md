@@ -212,7 +212,7 @@ Some of the main sections are as follows:
 ..
 &END MOTION
 ```
-Now take a look at the input file for the first exercise (a force/energy calculation of XXX).
+Now take a look at the input file for the first exercise (a force/energy calculation of 32 water molecules).
 
 ```
 cat input.inp
@@ -324,35 +324,7 @@ Text from files can be included with:
 ```
 
 
-## Running CP2K
 
-On most HPC systems (including ARCHER2) CP2K can be found as a module file. 
-Typing `module avail cp2k` gives a list of the available CP2K versions.
-
-```
-module load cp2k/8.1
-```
-
-Will make the CP2K exectuables for version 8.1 available.
-
-CP2K has two executables for running in parallel. `cp2k.popt` is the parallelised exectuable for running MPI-only 
-(e.g. no OpenMP/threading). `cp2k.psmp` is the mixed mode parallelised MPI+OpenMP executable. Since version 7.1
-`cp2k.popt` is a symbolic link of `cp2k.psmp` with a single thread. In this tutorial we will be using `cp2k.psmp`
-for the practical exercises.
-
-We have provided job submission scripts for running each of the exercises on the compute nodes of ARCHER2. 
-These look like this:
-
-```
-job script
-```
-
-
-Jobs can be submitted with:
-
-```
-sbatch cp2k-job.sh
-```
 
 ### Basis sets and pseudopotential files
 
@@ -385,7 +357,71 @@ you wanted to find all the hydrogen basis sets within BASIS_MOLOPT you could do:
 grep ' H ' /work/y07/shared/cp2k/cp2k-8.1/data/BASIS_MOLOPT
 ```
 
+
+
+## Running CP2K
+
+On most HPC systems (including ARCHER2) CP2K can be found as a module file. 
+Typing `module avail cp2k` gives a list of the available CP2K versions.
+
+```
+module load cp2k/8.1
+```
+
+Will make the CP2K exectuables for version 8.1 available.
+
+CP2K has two executables for running in parallel. `cp2k.popt` is the parallelised exectuable for running MPI-only 
+(e.g. no OpenMP/threading). `cp2k.psmp` is the mixed mode parallelised MPI+OpenMP executable. Since version 7.1
+`cp2k.popt` is a symbolic link of `cp2k.psmp` with a single thread. In this tutorial we will be using `cp2k.psmp`
+for the practical exercises.
+
+We have provided job submission scripts for running each of the exercises on the compute nodes of ARCHER2. 
+These look like this:
+
+```
+#!/bin/bash
+
+#SBATCH --job-name=CP2K_test
+#SBATCH --nodes=1
+#SBATCH --tasks-per-node=128
+#SBATCH --cpus-per-task=1
+#SBATCH --time=00:20:00
+
+#SBATCH --account=XXX
+#SBATCH --partition=standard
+#SBATCH --qos=standard
+
+# Load the relevant CP2K module
+# Ensure OMP_NUM_THREADS is consistent with cpus-per-task above
+# Launch the executable
+
+module load epcc-job-env
+module load cp2k/8.1
+
+export OMP_NUM_THREADS=1
+export OMP_PLACES=cores
+
+srun --hint=nomultithread --distribution=block:block cp2k.psmp -i input-H2O.inp
+
+```
+
+
+Jobs can be submitted with:
+```
+sbatch cp2k-job.sh
+```
+You can monitor the status of running jobs with:
+```
+squeue -u $USER
+```
+and deleted with:
+```
+scancel JOBID
+```
+
 ### Output files
+
+
 
 #### Standard output
 
@@ -419,15 +455,45 @@ and the restart file name should be given in the SCF section, or the project nam
 be taken that the wavefunction is a suitable guess for the SCF calculation otherwise 
 it may not converge or take longer to.
 
+
+
 ## Exercise 1: Calculating energy/forces
+
+### 1.1: Looking at the outputs
+
+
+
+```
+cd exercise1
+ll
+
+```
 
 Run the calculation using the job script provided.
 
+sbatch cp2k-job-1.sh
 
-Change the `PRINT_LEVEL` to `HIGH` and run again
-What is added in the output
+The output should be writen to the slurm-XXXX.out file. Open this file e.g.
 
-Restarting SCF
+less slurm-500382.out
+
+How many steps does it take to converge the SCF run?
+What is the total run time?
+
+### 1.2 Changing the print level
+
+Change the `PRINT_LEVEL` to `MEDIUM` and then run the calculation again
+
+What is added in the output?
+
+
+### 1.3: Restarting with SCF wavefunction
+
+Edit the input Uncomment the line
+WFN_RESTART_FILE_NAME exercise1-RESTART.wfn
+
+change SCF_GUESS ATOMIC
+to SCF_GUESS RESTART
 
 ## Example usage
 
