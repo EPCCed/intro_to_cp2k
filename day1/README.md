@@ -5,9 +5,8 @@
 CP2K is a quantum chemistry package for performing atomistic simulations which 
 has a variety of applications and features. CP2K is used for wide variety of 
 systems such as solid-state systems, molecules, liquids and biological systems. 
-It is optimized for the mixed Gaussian and Plane-Waves (GPW) method based on 
-pseudopotentials, but is able to run all-electron or pure plane-wave/Gaussian
-calculations as well.
+It is optimized for using density functional theory (DFT) with the mixed Gaussian 
+and Plane-Waves (GPW) method based on pseudopotentials.
 
 This course is designed to teach attendees how to run basic CP2K calculations 
 and give them the key knowledge required for doing so. It will cover the
@@ -17,7 +16,7 @@ before going through some hands-on practical exercises.
 We will also cover a selection of helpful tips and how to deal with common
 problems encountered when using CP2K with your own system. This will include
 strategies for creating your own input file and where to find guidance and help 
-with preparing input files.
+when preparing input files.
 
 This course will assume no prior experience of using CP2K or other atomistic 
 simulation packages however it will also aim to be useful to those who have some
@@ -28,19 +27,19 @@ and some familiarity with using HPC machines (such as ARCHER2).
 
 While we will be referencing density functional theory and other theoretical
 methods understanding of these is not the principal aim of this course. Our aim
-is to help familiarise attendees with using CP2K to run simulations.
+is to help familiarise attendees with using CP2K to run atomistic simulations.
 
-Topics that will be covered are:
+The main topics covered will be:
 
 * What can CP2K do
 * Understanding the CP2K input file
 * Input file preparation
-* Running CP2K jobs and understanding the outputs
+* Running CP2K jobs and understanding the output
 * Key parameters and ensuring accuracy
 * Getting good performance
 * Common pitfalls and problems
 * How to start with running your own simulations and where to find guidance
-* Practicals: Energy minimisation, energy cut-off convergence, geometry optimisation, molecular dynamics
+* Practicals: Energy minimisation, energy cut-off convergence, geometry optimisation and molecular dynamics
 
 
 ## About CP2K
