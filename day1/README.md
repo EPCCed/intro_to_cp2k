@@ -117,16 +117,21 @@ Information about setting up an account, ssh key pair and logging on to ARCHER2
 can be found [here](https://docs.archer2.ac.uk/quick-start/quickstart-users/)
 
 Once you have logged into ARCHER2 you will need to do some steps to set up for
-the practicals.
+the practicals and change to the right location to run jobs.
+
+The commands below will allow you to change to your work directory (where you can run jobs),
+download the materials, and go to the folder containing the files for the first exercise.
 
 ```
-# change to the your work directory
-cd /work/ta0XX/ta0XX/username
-# download the materials
-wget XXXX
-# go to the first exercise
-cd practicals/exercise1
+auser@uan02:~> cd /work/ta0XX/ta0XX/auser
+auser@uan02:/work/ta0XX/ta0XX/auser> wget XXXX
+auser@uan02:/work/ta0XX/ta0XX/auser> cd cp2k-practical-files/exercise1
+auser@uan02:/work/group/group/auser/cp2k-practical-files/exercise1> ls
+cp2k-job-1.sh input_H2O.inp
 ```
+
+* input_H2O.inp is the main input file
+* cp2k-job-1.sh is the job submission script
 
 
 
@@ -215,7 +220,7 @@ Some of the main sections are as follows:
 Now take a look at the input file for the first exercise (a force/energy calculation of 32 water molecules).
 
 ```
-cat input.inp
+cat input-H2O.inp
 
 
 ```
@@ -224,8 +229,8 @@ We have to set up calculation type as `ENERGY_FORCE` in the `&GLOBAL` section:
 
 ```
 &GLOBAL
-  PROJECT Si_bulk          ! Name of the calculation
   PRINT_LEVEL LOW          ! Verbosity of the output
+  PROJECT exercise1        ! Name of the project for the calculation
   RUN_TYPE ENERGY_FORCE    ! Calculation type: energy and forces
 &END GLOBAL
 ```
@@ -234,19 +239,28 @@ In the `&FORCE_EVAL` section, we define the basic system definitions (such as
 topology and coordinates). Here we are only going to explain the most important 
 ones:
 - `METHOD QS` : QUICKSTEP is the QM method in CP2K ([link](https://www.cp2k.org/quickstep)).
-- In the `&SUBSYS` subsection, we define several parameters of the system. 
-  - `&CELL` defines the simulation box size that will contain all QM atoms.
-  - `&COORD` defines the starting coordinates of the QM atoms. 
 - In the `&DFT` subsection, we define several parameters of the density 
 functional theory (DFT) basis set
   - `&QS` subsection where QUICKSTEP parameters are set. Amongst other things, 
-we need to specify which QS method we are using (in this case `METHOD PM3`).
+we need to specify which QS method we are using (in this case `METHOD GPW`).
+    - `EPS-DEFAULT` sets the default threshold for energy correctness
   - `&MGRID` subsection where parameters for calculating the Gaussian 
 plane waves are defined.
+    - `CUTOFF` is the energy cutoff for plane-waves
+    - `NGRIDS` is the number of multigrids to use
   - `&SCF` subsection where parameters for finding a self-consistent solution 
 (SCF) of the 
 [Kohn-Sham](https://en.wikipedia.org/wiki/Kohn%E2%80%93Sham_equations) DFT 
 formalism are defined.
+    - ` SCF_GUESS` sets the initial guess for the SCF 
+    - `EPS_SCF`
+    - `MAX_SCF`
+ - `XC`
+- In the `&SUBSYS` subsection, we define several parameters of the system. 
+  - `&CELL` defines the simulation box size that will contain the atoms.
+  - `&COORD` defines the starting coordinates of the atoms. 
+  - `&KIND` gives the properties for each element.
+
 
 ### The CP2K manual
 
@@ -330,14 +344,18 @@ Text from files can be included with:
 
 In the input file for the first exercise we have defined filenames for the basis 
 sets and pseudopotentials.
-
+```
     BASIS_SET_FILE_NAME  BASIS_MOLOPT
-    POTENTIAL_FILE_NAME  POTENTIAL
+    POTENTIAL_FILE_NAME  GTH_POTENTIALS
+``` 
+
+```
     &KIND H  
       ELEMENT H  
-      BASIS_SET DZVP-MOLOPT-GTH
-      POTENTIAL GTH-PBE
+      BASIS_SET DZVP-MOLOPT-SR-GTH-q1
+      POTENTIAL GTH-PBE-q1
     &END KIND
+```
 
 The `BASIS_SET` and `POTENTIAL` options will correspond to one of the basis sets
 and potenials for the particular element within the basis set and potential files. 
@@ -463,37 +481,40 @@ it may not converge or take longer to.
 
 
 
-```
-cd exercise1
-ll
-
-```
-
 Run the calculation using the job script provided.
 
+```
 sbatch cp2k-job-1.sh
+```
 
-The output should be writen to the slurm-XXXX.out file. Open this file e.g.
+The output should be writen to the slurm-XXXX.out file (it will finish very quickly). 
+Open this file e.g.
 
+```
 less slurm-500382.out
+```
 
 How many steps does it take to converge the SCF run?
 What is the total run time?
 
+Note that the wave function restart file `exercise1-RESTART.wfn` is also written.
+
 ### 1.2 Changing the print level
 
-Change the `PRINT_LEVEL` to `MEDIUM` and then run the calculation again
+Change the `PRINT_LEVEL` from `LOW` to `MEDIUM` and then run the calculation again.
 
 What is added in the output?
 
 
 ### 1.3: Restarting with SCF wavefunction
 
-Edit the input Uncomment the line
-WFN_RESTART_FILE_NAME exercise1-RESTART.wfn
+Edit the input and uncomment the line
 
-change SCF_GUESS ATOMIC
-to SCF_GUESS RESTART
+`WFN_RESTART_FILE_NAME exercise1-RESTART.wfn`
+
+Also change the line `SCF_GUESS ATOMIC` to `SCF_GUESS RESTART`
+
+This sets the 
 
 ## Example usage
 
