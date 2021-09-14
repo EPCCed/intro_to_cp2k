@@ -557,14 +557,17 @@ settings.
 Website tutorials
 Regression tests
 
-## Common pitfalls
+## Common pitfalls and problems
 
-Input file error
-OOM
+### Error in input file 
+
+### Out of memory errors
+
+### SCF not converged
 
 ## Exercise 2: Converging the energy cutoff
 
 In this execise
 
-## How to get help
+
 
