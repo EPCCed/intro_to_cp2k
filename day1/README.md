@@ -13,8 +13,8 @@ and give them the key knowledge required for doing so. It will cover the
 important options in the CP2K input file and how to set up a CP2K calculation
 before going through some hands-on practical exercises.
 
-We will also cover a selection of helpful tips and how to deal with common
-problems encountered when using CP2K with your own system. This will include
+We will also cover a selection of helpful tips and how to start with 
+using CP2K for your own system. This will include
 strategies for creating your own input file and where to find guidance and help 
 when preparing input files.
 
@@ -37,7 +37,6 @@ The main topics covered will be:
 * Running CP2K jobs and understanding the output
 * Key parameters and ensuring accuracy
 * Getting good performance
-* Common pitfalls and problems
 * How to start with running your own simulations and where to find guidance
 * Practicals: Energy minimisation, energy cut-off convergence, geometry optimisation and molecular dynamics
 
@@ -552,22 +551,23 @@ for the SCF calculation will usually speed up similar subsequent calculations as
 ... This is useful when you want to repeat a calculation with changing some of the
 settings.
 
-## Example usage
 
-Website tutorials
-Regression tests
 
-## Common pitfalls and problems
 
-### Error in input file 
-
-### Out of memory errors
-
-### SCF not converged
 
 ## Exercise 2: Converging the energy cutoff
 
-In this execise
+In this execise you will converge the energy cutoff
+
+## Exercise 3: Changing basis sets and XC functionals
 
 
 
+Bonus: Reconverge the CUTOFF again
+
+## Example set ups usage
+
+CP2K has a wide variety of
+
+Website tutorials
+Regression tests
