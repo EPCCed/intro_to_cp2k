@@ -180,20 +180,34 @@ Some of the main sections are as follows:
    &DFT            # parameters for the DFT calculation
        BASIS_SET_FILE_NAME  ..     # filename for the basis sets
        POTENTIAL_FILE_NAME  ..     # filename for the potential
-       &SCF        # SCF parameters
+       &SCF        # SCF parameters (self-consistent field calculation)
        ..
+          SCF_GUESS ..
+          EPS_SCF ..
+          MAX_SCF ..
+          &OT     # Orbital transform minimiser scheme
+            ..
+          &END OT
        &END SCF
        
-       &MGRID      # Multigrid information
+       &MGRID      # Realspace multigrid information
        ..
+          CUTOFF ..
+          REL_CUTOFF ..
+          NGRIDS ..
        &END MGRID
        
        &QS         # Quickstep parameters
        ..
+          EPS_DEFAULT ..
+          METHOD ..
        &END QS
    
-       &XC         # exchange-correlation settings
+       &XC         # exchange-correlation functional settings
        ..
+          &XC_FUNCTIONAL
+          ..
+          &END XC_FUNCTIONAL
        &END XC
    &END DFT
 
@@ -221,9 +235,12 @@ Now take a look at the input file for the first exercise (a force/energy calcula
 
 ```
 cat input-H2O.inp
-
-
 ```
+
+You should be able to see a lot of these options in the input and identify the
+values chosen.
+
+
 
 We have to set up calculation type as `ENERGY_FORCE` in the `&GLOBAL` section:
 
@@ -344,6 +361,7 @@ Text from files can be included with:
 
 In the input file for the first exercise we have defined filenames for the basis 
 sets and pseudopotentials.
+
 ```
     BASIS_SET_FILE_NAME  BASIS_MOLOPT
     POTENTIAL_FILE_NAME  GTH_POTENTIALS
@@ -358,7 +376,7 @@ sets and pseudopotentials.
 ```
 
 The `BASIS_SET` and `POTENTIAL` options will correspond to one of the basis sets
-and potenials for the particular element within the basis set and potential files. 
+and potentials for the particular element within the basis set and potential files. 
 Note that there is usually no need to supply the basis set file directly in your
 current directory as these are included automatically from the CP2K data directory path.
 
@@ -448,7 +466,15 @@ The main output file will contain the progress of the simulation and will be upd
 The beginning of the  output contains information about the settings for the run. 
 This gives the important input parameters and details of how CP2K was built and run.
 
-The report of the calculation then follows in the output file. For the exercise
+The report of the calculation then follows in the output file. This will depend
+on the type of run that has been chosen and the output settings. Usually it
+will contain some for of SCF calculation showing the energy convergence over a number 
+of steps.
+
+The line `*** SCF run converged in    10 steps ***` is printed when the SCF has
+converged. This indicates that the  required tolerance for self-consistency has been met.
+
+After this a breakdown of the energy contributions is usually printed.
 
 
 
@@ -493,11 +519,16 @@ Open this file e.g.
 ```
 less slurm-500382.out
 ```
+At the end of the calculation a timing report is given indicating it has finished.
+
+You should also see a message that the SCF has converged.
 
 How many steps does it take to converge the SCF run?
-What is the total run time?
+What is the total run time? This is printed at the top of the timing report e.g.
 
-Note that the wave function restart file `exercise1-RESTART.wfn` is also written.
+CP2K
+
+Note that the wave function restart files `exercise1-RESTART.wfn` are also written.
 
 ### 1.2 Changing the print level
 
@@ -508,13 +539,18 @@ What is added in the output?
 
 ### 1.3: Restarting with SCF wavefunction
 
-Edit the input and uncomment the line
+Edit the input and uncomment the line:
 
 `WFN_RESTART_FILE_NAME exercise1-RESTART.wfn`
 
 Also change the line `SCF_GUESS ATOMIC` to `SCF_GUESS RESTART`
 
-This sets the 
+This sets the input file to use the previously generated SCF wave functions
+as a guess for the SCF calculation. Run the calculation again and you should see that the
+number of SCF steps is fewer than before. Using the restart files as a guess
+for the SCF calculation will usually speed up similar subsequent calculations as
+... This is useful when you want to repeat a calculation with changing some of the
+settings.
 
 ## Example usage
 
@@ -527,6 +563,8 @@ Input file error
 OOM
 
 ## Exercise 2: Converging the energy cutoff
+
+In this execise
 
 ## How to get help
 
