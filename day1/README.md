@@ -56,6 +56,17 @@ quantum-mechanical/molecular-dynamics (QM/MM), and perform other forms of metady
 * [The CP2K Github page](https://github.com/cp2k/cp2k)
 * [CP2K ARCHER2 documentation](https://docs.archer2.ac.uk/research-software/cp2k/cp2k/) 
 
+DFT in CP2K is based on the Quickstep method, this is the part of CP2K devoted to solving
+the electronic structure problem in order to calculate the forces on  atoms.
+
+In the core of Quickstep, a self-consistant field (SCF) calculation is performed in order to find
+the ground state energy of the system. This
+involves performing a number of  steps where the potential is calculated 
+from the electronic density and then this is used to construct a new electron
+density by solving the KS equations (this density is then used in the next SCF step).
+The SCF converges when the required tolarence for self-consistency is met. 
+The electronic state found at the end of a converged SCF calculation represents 
+the best prediction of the employed method for the electronic ground state energy minimum.
 
 ### Attendee questions
 
@@ -67,24 +78,43 @@ TODO: Add etherpad link
 
 ### CP2K main features
 
+TODO: edit this
+
 #### Quickstep
 
-Gaussian and Plane Waves Method
+Quickstep is based on the Gaussian and plane waves method (GPW) and
+its augmented extension (GAPW). Central in this approach is a dual basis of 
+atom centred Gaussian orbitals and plane waves (regular grids). The former
+is used to represent the wave functions and e.g. the Kohn-Sham matrix, whereas the
+latter is used to represent the electronic density
 
-#### Obital transform method
 
-#### GAPW
 
+
+#### Orbital transform method
+
+The orbital transformation (OT) method is a direct minimisation scheme that
+allows for efficient wave function optimisation. It is, especially for large 
+systems and large basis sets, significantly faster than diagonalisation/DIIS 
+based methods, and is guaranteed to converge. Even though it scales cubically 
+with system size, approx. 1000 atoms (20k-30k basis functions) can be studied 
+fairly easily.
 
 #### Hartree Fock exchange
 
-Used in hybrid exchange correlation functionals such as B3LYP and PBE0, and double-hybrid functionals.
+The Hartree Fock exchange is use in hybrid XC methods where
+it is combined with GGA methods in order to improve the accuracy of the XC contribution.
+This is used for PBE0 and B3LYP and also double-hybrid functionals such as
+B2PLYP and B2GPPLYP which use the PT2 correlation contribution aditoinally.
 
-#### Linear scaling DFT
 
 #### XC functionals
 
-LDA, GGA, meta-GGA. And many others provided by LibXC.
+There are a wide range of functionals for representing the exchange-correlation
+functionals each with different levels of accuracy (the XC functional contains
+approximations for the exact functionals for exchange and correlation).
+
+LDA, GGA, meta-GGA. And many others provided by (LibXC)[https://www.tddft.org/programs/libxc/].
 
 ####  Optimisation
 
@@ -129,8 +159,8 @@ auser@uan02:/work/group/group/auser/cp2k-practical-files/exercise1> ls
 cp2k-job-1.sh input_H2O.inp
 ```
 
-* input_H2O.inp is the main input file
-* cp2k-job-1.sh is the job submission script
+* `input_H2O.inp` is the main input file
+* `cp2k-job-1.sh` is the job submission script
 
 
 
@@ -268,8 +298,8 @@ plane waves are defined.
 (SCF) of the 
 [Kohn-Sham](https://en.wikipedia.org/wiki/Kohn%E2%80%93Sham_equations) DFT 
 formalism are defined.
-    - ` SCF_GUESS` sets the initial guess for the SCF 
-    - `EPS_SCF`
+    - ` SCF_GUESS` sets the initial guess for the electron density
+    - `EPS_SCF` is the tolarance for SCF convergence
     - `MAX_SCF`
  - `XC`
 - In the `&SUBSYS` subsection, we define several parameters of the system. 
@@ -520,14 +550,33 @@ less slurm-500382.out
 ```
 At the end of the calculation a timing report is given indicating it has finished.
 
-You should also see a message that the SCF has converged.
+You should also see a message that the SCF has converged (this will be further
+up in the output).
 
-How many steps does it take to converge the SCF run?
+How many steps does it take to converge the SCF run? 
+
+You will note that the SCF has been split into two parts. This is because it reaches
+the limit of the `MAX_SCF` steps for the inner cycle and then move onto to a second
+outer SCF step.
+
 What is the total run time? This is printed at the top of the timing report e.g.
 
-CP2K
+```
+ -------------------------------------------------------------------------------
+ -                                                                             -
+ -                                T I M I N G                                  -
+ -                                                                             -
+ -------------------------------------------------------------------------------
+ SUBROUTINE                       CALLS  ASD         SELF TIME        TOTAL TIME
+                                MAXIMUM       AVERAGE  MAXIMUM  AVERAGE  MAXIMUM
+ CP2K                                 1  1.0    0.234    0.236    8.816    8.816
+ qs_forces                            1  2.0    0.006    0.007    5.214    5.215
+ qs_energies                          1  3.0    0.010    0.011    5.032    5.032
 
-Note that the wave function restart files `exercise1-RESTART.wfn` are also written.
+```
+
+Note that the wave function restart files `exercise1-RESTART.wfn` have also 
+been written.
 
 ### 1.2 Changing the print level
 
@@ -567,7 +616,13 @@ Bonus: Reconverge the CUTOFF again
 
 ## Example set ups usage
 
-CP2K has a wide variety of
+CP2K has a wide variety of features that can be hard to find documentation and 
+appropirate resources for.
+When starting to use a new method it is important to get the input file set up correctly
+to prevent errors and inaccuracies.
+
+
+
 
 Website tutorials
 Regression tests
