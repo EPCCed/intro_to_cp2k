@@ -594,8 +594,8 @@ Edit the input and uncomment the line:
 Also change the line `SCF_GUESS ATOMIC` to `SCF_GUESS RESTART`
 
 This sets the input file to use the previously generated SCF wave functions
-as a guess for the SCF calculation. Run the calculation again and you should see that the
-number of SCF steps is fewer than before. Using the restart files as a guess
+as a guess for the SCF calculation. Run the calculation again and you should see
+that only one step is required before the SCF run converges. Using the restart files as a guess
 for the SCF calculation will usually speed up similar subsequent calculations as
 ... This is useful when you want to repeat a calculation with changing some of the
 settings.
@@ -606,7 +606,22 @@ settings.
 
 ## Exercise 2: Converging the energy cutoff
 
-In this execise you will converge the energy cutoff
+In this execise you will converge the energy cutoff for the same system as in the previous 
+execise.
+
+Quickstep uses a multi-grid system for mapping the product Gaussians onto the real space grid(s).
+The energy cutoff sets the planewave cutoff in Ry. A larger cutoff translates to a finer multi-grid.
+If the grid is too coarse then the calcaultion may become innaccurate. Having a 
+however at a certain point increasing the cutoff would no longer make any difference to the energy, but would increase the computational cost.
+
+Go to the execise 2 directory
+
+Here we have 4 files:
+
+- `gen_cutoff.sh` - this is a bash script for generating input file and directories for different cutoff values
+- `input_H2O_temp.inp` - this is a template for the input files where the CUTOFF can be easily changed
+- `execise2-RESTART.wfn` - this is the converged SCF wavefunction which willl be used as a guess for the SCF in each calculation
+- `cp2k-job-2.sh` - this is a job script that will run the calculations in each directory and extract information from the outputs
 
 ## Exercise 3: Changing basis sets and XC functionals
 
