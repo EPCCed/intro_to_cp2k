@@ -125,11 +125,30 @@ This energy should be going downwards (we are minimising it).
 
 ## Exercise 4: Molecular dynamics
 
+Submit this one now! It will take ~10 minutes
+
+
+
+```
+&MOTION
+  &MD
+    ENSEMBLE NVE
+    STEPS 500
+    TIMESTEP 0.5
+    TEMPERATURE 300.0
+  &END MD
+&END MOTION
+```
 
 
 ## Execise 5: Getting good parallel performance on ARCHER2
 
 ## Input building blocks
+
+Things you should definefly do if you are using QuickStep with GPW.
+
+Extra steps may be required if you are using more complicated methods
+
 
 1. System 
  What is your system are your input coordinates correct?
@@ -149,7 +168,7 @@ Check your potentials match the XC choice
 
 3. What is you SCF set up
 Choosen of optimiser/minimiser
-
+EPS_SCF
 
 
 5. Does the SCF converge for a single point ENERGY calculation? Is the energy resonable?
@@ -157,7 +176,18 @@ Choosen of optimiser/minimiser
 
 4. Is the CUTOFF and REL CUTOFF and NGRIDS suitable
 
-5. Now double check the basis sets potnetisl by calcaulating some know property. If anything is changed you will have to redo step 4.
+5. Now double check the settings by calcaulating some know property. If anything is changed you will have to redo step 4.
 
-6. You might be able to do some simple production run e.g. geo_opt if you are sure of steps 1-7, but check the run type specific settings
+6. Refine method fi necessary - HFX, any changes in basis set requried
 
+## Resources
+
+### How to guides on the website
+
+### Regression tests
+
+### CP2K Google group
+
+### Bioexcel QM/MM BPG
+
+### CP2K build instructions
