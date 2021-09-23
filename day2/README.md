@@ -65,7 +65,7 @@ use one in place of an input file in the CP2K run command to start from that
 point.
 
 The `exercise3-pos-1.xyz` file contains a series of xyz's for the atomic coordinates
-throughout the optimisation. This can be viewed in VMD or similar as a series of
+throughout the optimisation. This can be viewed in VMD (or similar) as a series of
 frames which shows the trajectory of the atoms to their final relaxed position.
 
 You can view this with vmd:
@@ -78,8 +78,11 @@ vmd exercise3-pos-1.xyz
 TIP: In our case the structure is simple and the optimisation happens quickly. 
 However if you have a system where the optimisation will not complete then it
 is a good idea to visualise your structure and check it is relaxing as expected.
+If your starting structure is poor (far from the minimum) it will take longer.
 
-The standard output file
+The standard output file (`slurm-XXXXXX.out`) will contain sections like the 
+below after each geometry optimisation step which give a summary. When optimisation
+is finished you should see that the convergence check parameters are all `YES`.
 
 ```
  *******************************************************************************
@@ -110,7 +113,7 @@ The standard output file
 
 ```
 
-To see the energy at each optimiation step you can run:
+To track the energy at over the course of the calculation you can run:
 
 ```
 grep 'Total Energy' slurm-XXXX.out
@@ -122,6 +125,39 @@ This energy should be going downwards (we are minimising it).
 
 ## Exercise 4: Molecular dynamics
 
-## Getting good parallel performance on ARCHER2
 
-## Where to get information/help
+
+## Execise 5: Getting good parallel performance on ARCHER2
+
+## Input building blocks
+
+1. System 
+ What is your system are your input coordinates correct?
+Is your system periodic?
+Does it have a crystallline structure, are the cell dimesions correct for this?
+
+
+
+2. What basis sets and pseudopotentials are available for elements 
+BASIS_SETS or BASIS_MOLOPT for molecular structures are a good place to start
+Use TZPVT-GTH or higher for production runs
+
+4. Choice of XC functional. LDA-> GGA -> metaGCA -> hybrid
+GGA a good starting point. You should check properties before trying higher order methods
+Check your potentials match the XC choice
+
+
+3. What is you SCF set up
+Choosen of optimiser/minimiser
+
+
+
+5. Does the SCF converge for a single point ENERGY calculation? Is the energy resonable?
+
+
+4. Is the CUTOFF and REL CUTOFF and NGRIDS suitable
+
+5. Now double check the basis sets potnetisl by calcaulating some know property. If anything is changed you will have to redo step 4.
+
+6. You might be able to do some simple production run e.g. geo_opt if you are sure of steps 1-7, but check the run type specific settings
+
