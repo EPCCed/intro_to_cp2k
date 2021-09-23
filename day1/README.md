@@ -553,13 +553,15 @@ At the end of the calculation a timing report is given indicating it has finishe
 You should also see a message that the SCF has converged (this will be further
 up in the output).
 
-How many steps does it take to converge the SCF run? 
+*How many steps does it take to converge the SCF run?*
 
 You will note that the SCF has been split into two parts. This is because it reaches
 the limit of the `MAX_SCF` steps for the inner cycle and then move onto to a second
 outer SCF step.
 
-What is the total run time? This is printed at the top of the timing report e.g.
+*What is the total run time?*
+
+This is printed at the top of the timing report e.g.
 
 ```
  -------------------------------------------------------------------------------
@@ -582,7 +584,7 @@ been written.
 
 Change the `PRINT_LEVEL` from `LOW` to `MEDIUM` and then run the calculation again.
 
-What is added in the output?
+*What is added in the output?*
 
 
 ### 1.3: Restarting with SCF wavefunction
@@ -594,11 +596,17 @@ Edit the input and uncomment the line:
 Also change the line `SCF_GUESS ATOMIC` to `SCF_GUESS RESTART`
 
 This sets the input file to use the previously generated SCF wave functions
-as a guess for the SCF calculation. Run the calculation again and you should see
-that only one step is required before the SCF run converges. Using the restart files as a guess
+as a guess for the SCF calculation. Run the calculation again.
+
+*How many steps does it take to converge the SCF run now?*
+
+*What is the total run time now?*
+
+Using the restart files as a guess
 for the SCF calculation will usually speed up similar subsequent calculations as
 ... This is useful when you want to repeat a calculation with changing some of the
 settings.
+
 
 
 
@@ -611,17 +619,47 @@ execise.
 
 Quickstep uses a multi-grid system for mapping the product Gaussians onto the real space grid(s).
 The energy cutoff sets the planewave cutoff in Ry. A larger cutoff translates to a finer multi-grid.
-If the grid is too coarse then the calcaultion may become innaccurate. Having a 
-however at a certain point increasing the cutoff would no longer make any difference to the energy, but would increase the computational cost.
+If the grid is too coarse then the calcaultion may become innaccurate. Howver increasing the CUTOFF
+increases the time spent converging the SCF, as the grid becomes finer, so using an arbitarily large
+CUTOFF is not ideal. Choosing the correct value for the CUTOFF is  an important step when running 
+a CP2K calculation and should usually be done whenever changing the system set up or basis set.
 
-Go to the execise 2 directory
+To converge the CUTOFF you will perform a series of calculations to
+find the total energy with different values for the CUTOFF in the input file and then check the convergene of the 
+energy. We will use the following CUTOFF values to give a good range:- `100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200`
+For ease of use the set up of the input files will be done with a script - `gen_cutoff.sh`. All this does is create
+directories for each CUTOFF value and fill them with the input file where the CUTOFF value has been correctly
+set. The jobscript `cp2k-job-2.sh` that runs the CP2K jobs also extracts the energies and run times.
 
-Here we have 4 files:
+If you go to the exercise 2 directory you should see 4 files:
 
-- `gen_cutoff.sh` - this is a bash script for generating input file and directories for different cutoff values
+- `gen_cutoff.sh` - this is a bash script for generating input files and directories for different cutoff values
 - `input_H2O_temp.inp` - this is a template for the input files where the CUTOFF can be easily changed
 - `execise2-RESTART.wfn` - this is the converged SCF wavefunction which willl be used as a guess for the SCF in each calculation
 - `cp2k-job-2.sh` - this is a job script that will run the calculations in each directory and extract information from the outputs
+
+
+Run the generation script to create and populate the directories. 
+If you look at the input file in one of the directories you should see the 
+cutoff value corresponds to the directory name.
+
+```
+bash gen_cutoff.sh
+cat cutoff_100Ry/input.inp
+```
+
+Now submit the job script.
+
+```
+sbatch cp2k-job-2.sh
+```
+
+CP2K will run in each directory in order with an output file is produced in each.
+If you like you can look at the outputs, however the script will also extract the 
+total energies and run times into two files `energies.out` and `runtimes.out`.
+
+Once the job completes these files should be fully populated with data from each
+run.
 
 ## Exercise 3: Changing basis sets and XC functionals
 
