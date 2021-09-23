@@ -125,23 +125,44 @@ This energy should be going downwards (we are minimising it).
 
 ## Exercise 4: Molecular dynamics
 
-Submit this one now! It will take ~10 minutes
+Submit this one now! It will take ~4 minutes
 
-
+To run a MD calculation the run type should be set to MD. The MD settings are 
+given in the MOTION section.
 
 ```
 &MOTION
   &MD
     ENSEMBLE NVE
-    STEPS 500
+    STEPS 200
     TIMESTEP 0.5
     TEMPERATURE 300.0
   &END MD
 &END MOTION
 ```
 
+The ENSEMBLE sets the thermostat for the system, the different options can be 
+found [here](https://manual.cp2k.org/trunk/CP2K_INPUT/MOTION/MD.html#ENSEMBLE).
+
+As the simulation runs the usual output files are produced. In addition to those 
+we have seen before the `exercise4-1.ener` file is produced. This contains the 
+important information (such as energies) over the course of the simulation.
+
+```
+#     Step Nr.          Time[fs]        Kin.[a.u.]          Temp[K]            Pot.[a.u.]        Cons Qty[a.u.]        UsedTime[s]
+         0            0.000000         0.135381356       300.000000000      -551.449021450      -551.313640094         0.000000000
+         1            0.500000         0.131340447       291.045498020      -551.444804490      -551.313464043         8.637100721
+         2            1.000000         0.129802132       287.636650047      -551.443130746      -551.313328614         1.908887810
+         3            1.500000         0.132532972       293.688088539      -551.445907131      -551.313374159         1.859717403
+         4            2.000000         0.138692431       307.337218462      -551.452296410      -551.313603979         1.617252311
+         5            2.500000         0.144844864       320.970778898      -551.458707366      -551.313862502         1.690137245
+```
+
+
 
 ## Execise 5: Getting good parallel performance on ARCHER2
+
+
 
 ## Input building blocks
 
@@ -181,6 +202,10 @@ EPS_SCF
 6. Refine method fi necessary - HFX, any changes in basis set requried
 
 ## Resources
+
+CP2K has a wide variety of features that can be hard to find documentation and
+appropirate resources for.
+
 
 ### How to guides on the website
 
