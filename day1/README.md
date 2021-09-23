@@ -145,6 +145,13 @@ Available in CP2K inbuild or through Plumed
 Information about setting up an account, ssh key pair and logging on to ARCHER2 
 can be found [here](https://docs.archer2.ac.uk/quick-start/quickstart-users/)
 
+If you would like to plot or visualise during these exercises you should ssh
+with the `-XY` option.
+
+```
+ssh -XY auser@login.archer2.ac.uk
+```
+
 Once you have logged into ARCHER2 you will need to do some steps to set up for
 the practicals and change to the right location to run jobs.
 
@@ -614,8 +621,14 @@ settings.
 
 ## Exercise 2: Converging the energy cutoff
 
+### 2.1 Using our previous water input
+
 In this execise you will converge the energy cutoff for the same system as in the previous 
 execise.
+
+This execise is adapted from the exercise [here](https://www.cp2k.org/events:2018_summer_school:converging_cutoff).
+This version is less detailed, if you would like more information you can refer
+to the original.
 
 Quickstep uses a multi-grid system for mapping the product Gaussians onto the real space grid(s).
 The energy cutoff sets the planewave cutoff in Ry. A larger cutoff translates to a finer multi-grid.
@@ -656,16 +669,47 @@ sbatch cp2k-job-2.sh
 
 CP2K will run in each directory in order with an output file is produced in each.
 If you like you can look at the outputs, however the script will also extract the 
-total energies and run times into two files `energies.out` and `runtimes.out`.
+total energies into `energies.out`.
 
-Once the job completes these files should be fully populated with data from each
-run.
+Once the job completes this file should be fully populated with data from each
+run. 
 
-## Exercise 3: Changing basis sets and XC functionals
+*How  does the CUTOFF vs. total energy change?*
 
+*What might be a suitable CUTOFF value to use?*
 
+You may also want to look at the difference in the `SUM OF ATOMIC FORCES` in
+each output to see how this changes with the `CUTOFF`. The difference in the forces
+on the atoms illustrates how important chosing the a good value for the `CUTOFF` is.
 
-Bonus: Reconverge the CUTOFF again
+### 2.2 Changing the XC functionals (optional)
+
+Change the XC functional from PBE to PADE. In doing this we are going from the
+generalised gradient approximation (GGA) to the local density approximation (LDA).
+
+You will need to change the functional in the XC section
+
+```
+&XC
+   &XC_FUNCTIONAL PADE
+   ...
+```
+
+And also change the POTENTIAL in the KIND sections for both H and O to use the corresponding
+potential for the XC functional.
+
+```
+&KIND H
+   BASIS_SET DZVP-MOLOPT-SR-GTH-q1
+   POTENTIAL GTH-PADE-q1
+&END
+```
+
+Repeat the steps as in the previous exercise.
+
+*How does the total energy vs. CUTOFF change now?*
+
+*Why might this converge at a lower energy?*
 
 ## Example set ups usage
 
