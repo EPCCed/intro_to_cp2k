@@ -134,15 +134,31 @@ given in the MOTION section.
 &MOTION
   &MD
     ENSEMBLE NVE
-    STEPS 200
+    STEPS 100
     TIMESTEP 0.5
     TEMPERATURE 300.0
   &END MD
 &END MOTION
 ```
 
+Most of these settings are self explanitory. It is worth noting that the units
+for the timestep is in femtoseconds (temperature is in Kelvin).
+
 The ENSEMBLE sets the thermostat for the system, the different options can be 
 found [here](https://manual.cp2k.org/trunk/CP2K_INPUT/MOTION/MD.html#ENSEMBLE).
+Here we have chosen an NVE ensemble. Doing an NVE run and checking the energy 
+conservation is a good way to check the system for techincal errors.
+
+We have also added the following to the QS section:
+
+```
+EXTRAPOLATION_ORDER 3
+EXTRAPOLATION ASPC
+```
+
+These set how the SCF wave function
+
+
 
 As the simulation runs the usual output files are produced. In addition to those 
 we have seen before the `exercise4-1.ener` file is produced. This contains the 
@@ -158,7 +174,29 @@ important information (such as energies) over the course of the simulation.
          5            2.500000         0.144844864       320.970778898      -551.458707366      -551.313862502         1.690137245
 ```
 
+This can be easily plotted to see the trajectory using a program of your choice. 
+The Cons Qty is the conserved quantity (in this case total energy = KE + PE) 
+which will depend on the thermostat used.
 
+`exercise4-pos-1.xyz` contains the trajectory of the atomic coordinates throughout
+the simulation. 
+
+`exercise4-1.restart` is a restart file that can be used to restart from the last
+step of the run. To do this edit the `cp2k-job-4.sh`
+
+```
+srun --hint=nomultithread --distribution=block:block cp2k.psmp -i exercise4-1.restart
+```
+
+This will continue the simulation for a further 100 MD steps.
+
+### 4.2 Checkpointing and writing
+
+By default the atomic coordinates are written every step and the restart information
+is checkpointed every 500 steps (as well as the last 4 steps). However we may
+want to change this particularly when running for many steps this amount of 
+printing can mean many files (this is especially bad if your system is large as
+a large amount of data will be produced).
 
 ## Execise 5: Getting good parallel performance on ARCHER2
 
