@@ -194,13 +194,35 @@ This will continue the simulation for a further 100 MD steps.
 
 ### 4.2 Checkpointing and writing files
 
-By default the atomic coordinates are written every step and the restart information
+By default the atomic coordinates are written every step and the restart history information
 is checkpointed every 500 steps (as well as the last 4 steps). However we may
 want to change this particularly when running for many steps this amount of 
 printing can mean many files (this is especially bad if your system is large as
 a large amount of data will be produced).
 
+We are going to set the input so that it writes a restart file every 50 steps.
+Add the following into the MOTION section of the input file and run it again.
+(Please make sure to change the input file name in cp2k-job-4.sh as well or you 
+will run the restart again)
+
+```
+  &PRINT
+    &RESTART_HISTORY
+      &EACH
+        MD 50
+      &END EACH
+    &END RESTART_HISTORY
+  &END PRINT
+```
+
+You can a similar block to print the [velocities](https://manual.cp2k.org/cp2k-8_2-branch/CP2K_INPUT/MOTION/PRINT/VELOCITIES.html)
+
+
+
 ## Execise 5: Getting good parallel performance on ARCHER2
+
+Strong and weak scaling
+Threads
 
 
 
