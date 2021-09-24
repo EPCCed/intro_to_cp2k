@@ -149,6 +149,8 @@ found [here](https://manual.cp2k.org/trunk/CP2K_INPUT/MOTION/MD.html#ENSEMBLE).
 Here we have chosen an NVE ensemble. Doing an NVE run and checking the energy 
 conservation is a good way to check the system for techincal errors.
 
+TIP: r improve the forces with EPS_SCF and EPS_DEFAULT, increase the cutoff, and reduce the timestep. 
+
 We have also added the following to the QS section:
 
 ```
@@ -190,7 +192,7 @@ srun --hint=nomultithread --distribution=block:block cp2k.psmp -i exercise4-1.re
 
 This will continue the simulation for a further 100 MD steps.
 
-### 4.2 Checkpointing and writing
+### 4.2 Checkpointing and writing files
 
 By default the atomic coordinates are written every step and the restart information
 is checkpointed every 500 steps (as well as the last 4 steps). However we may
