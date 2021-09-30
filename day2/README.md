@@ -219,10 +219,79 @@ You can a similar block to print the [velocities](https://manual.cp2k.org/cp2k-8
 
 
 
-## Execise 5: Getting good parallel performance on ARCHER2
+## Execise 5: Parallel performance on ARCHER2
 
-Strong and weak scaling
-Threads
+### 5.1:  Scaling
+
+We are now going to look at the performance of some MD simulations on ARCHER2. 
+The system we be similar to the one in the past exercise only with slightly different
+parameters. First we will run simulations across mutliple nodes and then use the 
+perfromance results to determine the optimum number of nodes
+to run on, and see how this depends on the size of the system.
+
+In the execise5 directory you have 4 different input files. 
+
+H2O-128.inp  H2O-256.inp  H2O-32.inp  H2O-64.inp
+
+These are part of the CP2K benchmark suite and be found 
+[here](https://github.com/cp2k/cp2k/tree/master/benchmarks/QS/).
+The number in the file name gives the number of water molecules.
+
+Together we are going to investigate the performance of each of these systems 
+aim to fill in this table (which can also be found in the etherpad).
+
+System   |  Nodes  |  Run time (s) |
+---------|---------|---------------|
+H2O-32   |    1    |               |
+H2O-32   |    2    |               |
+H2O-32   |    4    |               |
+H2O-64   |    1    |               |
+H2O-64   |    2    |               |
+H2O-64   |    4    |               |
+H2O-128  |    1    |               |
+H2O-128  |    2    |               |
+H2O-128  |    4    |               |
+H2O-256  |    1    |               |
+H2O-256  |    2    |               |
+H2O-256  |    4    |               |
+
+To do list you will just need to edit the provide job script to select the 
+input file and also change the `SBATCH nodes=` parameter at the top.
+
+The run time can be easily found once the run completes 
+using the following `grep` command
+
+```
+grep 'CP2K   ' slurm-XXXX.out
+```
+
+On ARCHER2 there are 128 cores per node,
+In a ideal case we might expect that id we go from using 1 to 2 nodes (or 2 to 4)
+that the run time would half. However there are non parallisable overheads
+within the code which means we cannot achive perfect scaling.
+
+One way of seeing the scaling is to calculate the speed up.
+
+Or the parallel effiecncy
+
+Usually we want to select the number of nodes that we run on carefully as to not 
+be inefficent with the resources. For example there is no use running a small 
+system on many many nodes as there will be limited improvemet in the performance
+due to the dominance of the overheads at this scale. Ideally when using a new
+system or new set up you should perform scaling tests to determine the optimum 
+numner of nodes to use.
+
+For the above systems how many nodes would you choose to use?
+
+### 5.2 Hybrid MPI+OpenMP
+
+So far we have been running using MPI only. This means tha we use as many processes
+as there are cores. However with CP2K it is also possible to use a mixture 
+of processes and threads, i.e. with mutliple threads per process. Threads can
+share memory, and so this can help to reduce the overall memory requirements
+for a calculation. It can also improve the performance compared to using MPI
+only.
+
 
 
 
