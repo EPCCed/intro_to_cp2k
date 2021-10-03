@@ -19,9 +19,9 @@ quantum-mechanical/molecular-dynamics (QM/MM), and perform other forms of metady
 DFT in CP2K is based on the Quickstep method, this is the part of CP2K devoted to solving
 the electronic structure problem in order to calculate the forces on  atoms.
 
-In the core of Quickstep, a self-consistant field (SCF) calculation is performed in order to find
+At the core of Quickstep, a self-consistant field (SCF) calculation is performed in order to find
 the ground state energy of the system. This
-involves performing a number of  steps where the potential is calculated 
+involves performing a number of steps where at each step the potential is calculated 
 from the electronic density and then this is used to construct a new electron
 density by solving the KS equations (this density is then used in the next SCF step).
 The SCF converges when the required tolarence for self-consistency is met. 
@@ -74,7 +74,8 @@ There are a wide range of functionals for representing the exchange-correlation
 functionals each with different levels of accuracy (the XC functional contains
 approximations for the exact functionals for exchange and correlation).
 
-LDA, GGA, meta-GGA. And many others provided by (LibXC)[https://www.tddft.org/programs/libxc/].
+Available functionals flavours include LDA, GGA, and meta-GGA. Many others provided 
+by (LibXC)[https://www.tddft.org/programs/libxc/].
 
 ####  Optimisation
 
@@ -86,17 +87,17 @@ Born Orpenheimer molecule dyamics, with a range of ensembles.
 
 #### QM/MM
 
-
+Classical molecular mechanics with a quantum mechnical QM region of interest.
 
 #### Classical forcefields FIST
 
-Classical forcefields in the CHARMM and AMBER formats.
+Classical forcefields in the CHARMM and AMBER formats for doing classical MD.
 
 #### The nudged elastic band method (NEB)
 
 #### Metadynamics
 
-Available in CP2K inbuild or through Plumed
+Available in inbuilt in CP2K or through Plumed.
 
 
 
@@ -671,15 +672,3 @@ Repeat the steps as in the previous exercise.
 
 *Why might this converge at a lower energy?*
 
-## Example set ups usage
-
-CP2K has a wide variety of features that can be hard to find documentation and 
-appropirate resources for.
-When starting to use a new method it is important to get the input file set up correctly
-to prevent errors and inaccuracies.
-
-
-
-
-Website tutorials
-Regression tests
