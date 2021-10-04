@@ -224,14 +224,16 @@ You can a similar block to print the [velocities](https://manual.cp2k.org/cp2k-8
 ### 5.1:  Scaling
 
 We are now going to look at the performance of some MD simulations on ARCHER2. 
-The system we be similar to the one in the past exercise only with slightly different
+The system will be similar to the one in the past exercise only with slightly different
 parameters. First we will run simulations across mutliple nodes and then use the 
-perfromance results to determine the optimum number of nodes
+performance results to determine the optimum number of nodes
 to run on, and see how this depends on the size of the system.
 
-In the execise5 directory you have 4 different input files. 
+In the exercise5 directory you have 4 different input files. 
 
-H2O-128.inp  H2O-256.inp  H2O-32.inp  H2O-64.inp
+```
+H2O-128.inp  H2O-256.inp  H2O-32.inp 
+```
 
 These are part of the CP2K benchmark suite and be found 
 [here](https://github.com/cp2k/cp2k/tree/master/benchmarks/QS/).
@@ -255,8 +257,9 @@ H2O-256  |    1    |               |
 H2O-256  |    2    |               |
 H2O-256  |    4    |               |
 
-To do list you will just need to edit the provide job script to select the 
+To do list you will just need to edit the provided job script to select the 
 input file and also change the `SBATCH nodes=` parameter at the top.
+On ARCHER2 there are 128 cores per node.
 
 The run time can be easily found once the run completes 
 using the following `grep` command
@@ -265,72 +268,63 @@ using the following `grep` command
 grep 'CP2K   ' slurm-XXXX.out
 ```
 
-On ARCHER2 there are 128 cores per node,
-In a ideal case we might expect that id we go from using 1 to 2 nodes (or 2 to 4)
-that the run time would half. However there are non parallisable overheads
-within the code which means we cannot achive perfect scaling.
 
-One way of seeing the scaling is to calculate the speed up.
+In an ideal case we might expect that if we go from using 1 to 2 nodes (or 2 to 4)
+that the run time would half. However there are non parallelisable overheads
+within the code which means we cannot achieve perfect scaling.
 
-Or the parallel effiecncy
+One way of seeing the scaling is to calculate the speed up:
+
+```
+Speed up = Time_1/Time_n
+```
+
+
 
 Usually we want to select the number of nodes that we run on carefully as to not 
-be inefficent with the resources. For example there is no use running a small 
-system on many many nodes as there will be limited improvemet in the performance
-due to the dominance of the overheads at this scale. Ideally when using a new
+be inefficent with the resources. For example there is usually no use running a small 
+system with a small amount of computational work to be done
+on many many nodes as there will be limited improvement in the performance
+due to the dominance of the serial overheads at this scale. Ideally when using a new
 system or new set up you should perform scaling tests to determine the optimum 
-numner of nodes to use.
+number of nodes to use.
 
 For the above systems how many nodes would you choose to use?
 
 ### 5.2 Hybrid MPI+OpenMP
 
-So far we have been running using MPI only. This means tha we use as many processes
+So far we have been running using MPI only. This means that we use as many processes
 as there are cores. However with CP2K it is also possible to use a mixture 
-of processes and threads, i.e. with mutliple threads per process. Threads can
+of processes and threads, i.e. using mutliple threads per process. Threads can
 share memory, and so this can help to reduce the overall memory requirements
 for a calculation. It can also improve the performance compared to using MPI
-only.
+only. We are going to investigate how using multiple threads affects the 
+performance of the MD run - `H2O-128.inp`.
 
+When using MPI+OpenMP one should take care to ensure that the shared memory portion
+of the process/thread placement does not span more than one NUMA region.
+Nodes on ARCHER2 are made up of two sockets each containing 4 NUMA regions of 16
+cores, i.e. there are 8 NUMA regions in total. Therefore the total number of 
+threads should ideally not be greater than 16, and also needs to be a factor of 16.
+Sensible choices for the number of threads are therefore 1 (single-threaded), 2,
+4, 8, and 16.
 
+To use more than one thread you will need to edit the job script. The number of
+cpus-per-process should be set to the number of threads. The tasks-per-node then
+needs to be set to ensure that the whole node is used. For example
+for 4 threads 128/4 = 32 tasks.
 
+ Threads |  Run time (s) |
+---------|---------------|
+    1    |               |
+    2    |               |
+    4    |               |
+    8    |               |
+    16   |               |
 
 ## Input building blocks
 
-Things you should definefly do if you are using QuickStep with GPW.
 
-Extra steps may be required if you are using more complicated methods
-
-
-1. System 
- What is your system are your input coordinates correct?
-Is your system periodic?
-Does it have a crystallline structure, are the cell dimesions correct for this?
-
-
-
-2. What basis sets and pseudopotentials are available for elements 
-BASIS_SETS or BASIS_MOLOPT for molecular structures are a good place to start
-Use TZPVT-GTH or higher for production runs
-
-4. Choice of XC functional. LDA-> GGA -> metaGCA -> hybrid
-GGA a good starting point. You should check properties before trying higher order methods
-Check your potentials match the XC choice
-
-
-3. What is you SCF set up
-Choosen of optimiser/minimiser
-EPS_SCF
-
-
-5. Does the SCF converge for a single point ENERGY calculation? Is the energy resonable?
-
-
-4. Is the CUTOFF and REL CUTOFF and NGRIDS suitable
-
-5. Now double check the settings by calcaulating some know property. If anything is changed you will have to redo step 4.
-
-6. Refine method fi necessary - HFX, any changes in basis set requried
 
 ## Resources
 
