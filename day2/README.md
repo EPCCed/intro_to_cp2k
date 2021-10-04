@@ -314,13 +314,15 @@ cpus-per-process should be set to the number of threads. The tasks-per-node then
 needs to be set to ensure that the whole node is used. For example
 for 4 threads 128/4 = 32 tasks.
 
- Threads |  Run time (s) |
----------|---------------|
-    1    |               |
-    2    |               |
-    4    |               |
-    8    |               |
-    16   |               |
+Aim to fill in the following table.
+
+| Threads |  Run time (s) |
+|---------|---------------|
+|    1    |               |
+|    2    |               |
+|    4    |               |
+|    8    |               |
+|    16   |               |
 
 ## Input building blocks
 
