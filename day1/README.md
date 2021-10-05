@@ -649,7 +649,7 @@ Repeat the steps as in the previous exercise.
 *Why might this converge at a lower energy?*
 
 
-### CP2K code base
+## CP2K code base
 
 CP2K is written in Fortran 2008 and can be run efficiently in parallel using a combination
 of multi-threading, MPI, and CUDA. It is freely available under the GPL license.
@@ -662,4 +662,4 @@ FFTW for FFTs
 * There is GPU offloading in dbscr, collocate and integrate routines
 * Additional libraries can be used for performance - ELPA, libxsmm, libgrid
 
-#### Build instructions
+### Build instructions
