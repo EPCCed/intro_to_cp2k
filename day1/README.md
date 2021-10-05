@@ -28,6 +28,7 @@ The SCF converges when the required tolarence for self-consistency is met.
 The electronic state found at the end of a converged SCF calculation represents 
 the best prediction of the employed method for the electronic ground state energy minimum.
 
+
 ### Attendee questions
 
 TODO: Add etherpad link
@@ -66,6 +67,7 @@ The Hartree Fock exchange is use in hybrid XC methods where
 it is combined with GGA methods in order to improve the accuracy of the XC contribution.
 This is used for PBE0 and B3LYP and also double-hybrid functionals such as
 B2PLYP and B2GPPLYP which use the PT2 correlation contribution aditoinally.
+The HFX requires use of the libint library.
 
 
 #### XC functionals
@@ -93,12 +95,13 @@ Classical molecular mechanics with a quantum mechnical QM region of interest.
 
 Classical forcefields in the CHARMM and AMBER formats for doing classical MD.
 
-#### The nudged elastic band method (NEB)
+#### The nudged elastic band method 
+
+
 
 #### Metadynamics
 
 Available in inbuilt in CP2K or through Plumed.
-
 
 
 ## Exercise 0: Logging on to ARCHER2 and setting up
@@ -121,8 +124,8 @@ download the materials, and go to the folder containing the files for the first 
 
 ```
 auser@uan02:~> cd /work/ta0XX/ta0XX/auser
-auser@uan02:/work/ta0XX/ta0XX/auser> wget XXXX
-auser@uan02:/work/ta0XX/ta0XX/auser> cd cp2k-practical-files/exercise1
+auser@uan02:/work/ta0XX/ta0XX/auser> git clone git@git.ecdf.ed.ac.uk:htetlow/intro_to_cp2k.git
+auser@uan02:/work/ta0XX/ta0XX/auser> cd intro_to_cp2k/cp2k-practical-files/exercise1
 auser@uan02:/work/group/group/auser/cp2k-practical-files/exercise1> ls
 cp2k-job-1.sh input_H2O.inp
 ```
@@ -179,9 +182,9 @@ Some of the main sections are as follows:
        POTENTIAL_FILE_NAME  ..     # filename for the potential
        &SCF        # SCF parameters (self-consistent field calculation)
        ..
-          SCF_GUESS ..
-          EPS_SCF ..
-          MAX_SCF ..
+          SCF_GUESS ..  # sets the initial guess for the electron density
+          EPS_SCF ..    # is the tolarance for SCF convergence
+          MAX_SCF ..    # maximum number of inner SCF steps
           &OT     # Orbital transform minimiser scheme
             ..
           &END OT
@@ -189,15 +192,14 @@ Some of the main sections are as follows:
        
        &MGRID      # Realspace multigrid information
        ..
-          CUTOFF ..
-          REL_CUTOFF ..
-          NGRIDS ..
+          CUTOFF ..     # is the energy cutoff for plane-waves
+          REL_CUTOFF .. 
+          NGRIDS ..     # is the number of multigrids to use
        &END MGRID
        
        &QS         # Quickstep parameters
        ..
-          EPS_DEFAULT ..
-          METHOD ..
+          EPS_DEFAULT ..  # sets the default threshold for energy correctness
        &END QS
    
        &XC         # exchange-correlation functional settings
@@ -248,32 +250,6 @@ We have to set up calculation type as `ENERGY_FORCE` in the `&GLOBAL` section:
   RUN_TYPE ENERGY_FORCE    ! Calculation type: energy and forces
 &END GLOBAL
 ```
-
-In the `&FORCE_EVAL` section, we define the basic system definitions (such as 
-topology and coordinates). Here we are only going to explain the most important 
-ones:
-- `METHOD QS` : QUICKSTEP is the QM method in CP2K ([link](https://www.cp2k.org/quickstep)).
-- In the `&DFT` subsection, we define several parameters of the density 
-functional theory (DFT) basis set
-  - `&QS` subsection where QUICKSTEP parameters are set. Amongst other things, 
-we need to specify which QS method we are using (in this case `METHOD GPW`).
-    - `EPS-DEFAULT` sets the default threshold for energy correctness
-  - `&MGRID` subsection where parameters for calculating the Gaussian 
-plane waves are defined.
-    - `CUTOFF` is the energy cutoff for plane-waves
-    - `NGRIDS` is the number of multigrids to use
-  - `&SCF` subsection where parameters for finding a self-consistent solution 
-(SCF) of the 
-[Kohn-Sham](https://en.wikipedia.org/wiki/Kohn%E2%80%93Sham_equations) DFT 
-formalism are defined.
-    - ` SCF_GUESS` sets the initial guess for the electron density
-    - `EPS_SCF` is the tolarance for SCF convergence
-    - `MAX_SCF`
- - `XC`
-- In the `&SUBSYS` subsection, we define several parameters of the system. 
-  - `&CELL` defines the simulation box size that will contain the atoms.
-  - `&COORD` defines the starting coordinates of the atoms. 
-  - `&KIND` gives the properties for each element.
 
 
 ### The CP2K manual
@@ -672,3 +648,18 @@ Repeat the steps as in the previous exercise.
 
 *Why might this converge at a lower energy?*
 
+
+### CP2K code base
+
+CP2K is written in Fortran 2008 and can be run efficiently in parallel using a combination
+of multi-threading, MPI, and CUDA. It is freely available under the GPL license.
+
+CP2K uses the dbcsr library for sparse matrix-matrix multiplication.
+FFTW for FFTs
+
+* MPI Parallelism is done over the real space grids.
+* Many subroutines make use of OpenMP threading - FFTs, collocate and integrate routines
+* There is GPU offloading in dbscr, collocate and integrate routines
+* Additional libraries can be used for performance - ELPA, libxsmm, libgrid
+
+#### Build instructions
