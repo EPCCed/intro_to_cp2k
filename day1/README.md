@@ -281,7 +281,7 @@ than others. This can be done by adding a `&PRINT` section within the input file
 ```
 &MOTION
    &PRINT
-      &TRAJECTORY
+      &TRAJECTORY MEDIUM
          &EACH
             MD 1
          &END EACH
@@ -293,9 +293,10 @@ than others. This can be done by adding a `&PRINT` section within the input file
     
 ```
 
-Again this has the options `SILENT, LOW, MEDIUM, HIGH` and also allows you to specify a filename
-for the output and how regularly it is written to.
-TODO: The example above doesn't use any of `SILENT, LOW, MEDIUM, HIGH`
+Again this has the print level options `SILENT, LOW, MEDIUM, HIGH` and also 
+allows you to specify a filename for the output and how regularly it is written 
+to.
+
 
 #### Units
 
