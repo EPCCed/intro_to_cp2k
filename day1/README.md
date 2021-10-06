@@ -1,4 +1,4 @@
-# Indroduction to CP2K day 1
+# Introduction to CP2K day 1
 
 
 ## About CP2K
@@ -16,15 +16,17 @@ quantum-mechanical/molecular-dynamics (QM/MM), and perform other forms of metady
 * [The CP2K Github page](https://github.com/cp2k/cp2k)
 * [CP2K ARCHER2 documentation](https://docs.archer2.ac.uk/research-software/cp2k/cp2k/) 
 
+While we will give a brief overview of all of these methods, in this course, 
+we will mainly focus on using CP2K for running DFT simulations.
 DFT in CP2K is based on the Quickstep method, this is the part of CP2K devoted to solving
 the electronic structure problem in order to calculate the forces on  atoms.
 
-At the core of Quickstep, a self-consistant field (SCF) calculation is performed in order to find
+At the core of Quickstep, a self-consistent field (SCF) calculation is performed in order to find
 the ground state energy of the system. This
 involves performing a number of steps where at each step the potential is calculated 
 from the electronic density and then this is used to construct a new electron
 density by solving the KS equations (this density is then used in the next SCF step).
-The SCF converges when the required tolarence for self-consistency is met. 
+The SCF converges when the required tolerance for self-consistency is met. 
 The electronic state found at the end of a converged SCF calculation represents 
 the best prediction of the employed method for the electronic ground state energy minimum.
 
@@ -33,7 +35,7 @@ the best prediction of the employed method for the electronic ground state energ
 
 TODO: Add etherpad link
 
-* What is your experiance level with CP2K?
+* What is your experience level with CP2K?
 * Have you used any other similar packages (VASP, Quantum Espresso, CASTEP, Siesta)?
 * What is your research area?
 
@@ -66,7 +68,7 @@ fairly easily.
 The Hartree Fock exchange is use in hybrid XC methods where
 it is combined with GGA methods in order to improve the accuracy of the XC contribution.
 This is used for PBE0 and B3LYP and also double-hybrid functionals such as
-B2PLYP and B2GPPLYP which use the PT2 correlation contribution aditoinally.
+B2PLYP and B2GPPLYP which use the PT2 correlation contribution additionally.
 The HFX requires use of the libint library.
 
 
@@ -85,11 +87,11 @@ Global and  geometry optimisation
 
 #### Molecular dynamics
 
-Born Orpenheimer molecule dyamics, with a range of ensembles.
+Born Orpenheimer molecule dynamics, with a range of ensembles.
 
 #### QM/MM
 
-Classical molecular mechanics with a quantum mechnical QM region of interest.
+Classical molecular mechanics with a quantum mechanical QM region of interest.
 
 #### Classical forcefields FIST
 
@@ -113,7 +115,7 @@ If you would like to plot or visualise during these exercises you should ssh
 with the `-XY` option.
 
 ```
-ssh -XY auser@login.archer2.ac.uk
+ssh -XY auser@login-4c.archer2.ac.uk
 ```
 
 Once you have logged into ARCHER2 you will need to do some steps to set up for
@@ -123,10 +125,10 @@ The commands below will allow you to change to your work directory (where you ca
 download the materials, and go to the folder containing the files for the first exercise.
 
 ```
-auser@uan02:~> cd /work/ta0XX/ta0XX/auser
-auser@uan02:/work/ta0XX/ta0XX/auser> git clone git@git.ecdf.ed.ac.uk:htetlow/intro_to_cp2k.git
-auser@uan02:/work/ta0XX/ta0XX/auser> cd intro_to_cp2k/cp2k-practical-files/exercise1
-auser@uan02:/work/group/group/auser/cp2k-practical-files/exercise1> ls
+auser@uan02:~> cd /work/ta042/ta042/auser
+auser@uan02:/work/ta042/ta042/auser> git clone git@git.ecdf.ed.ac.uk:htetlow/intro_to_cp2k.git
+auser@uan02:/work/ta042/ta042/auser> cd intro_to_cp2k/cp2k-practical-files/exercise1
+auser@uan02:/work/ta042/ta042/auser/cp2k-practical-files/exercise1> ls
 cp2k-job-1.sh input_H2O.inp
 ```
 
@@ -166,7 +168,8 @@ different properties and looks something like this.
 * Comments can be made with either the `!` or `#` symbols
 
 
-Some of the main sections are as follows:
+CP2K scripts require three primary sections (`&GLOBAL`, `&FORCE_EVAL`, and 
+`&MOTION`), each of which has a number of subsections. Some of the main sections are as follows:
 
 ```
 &GLOBAL            # global settings for the simulation
@@ -183,7 +186,7 @@ Some of the main sections are as follows:
        &SCF        # SCF parameters (self-consistent field calculation)
        ..
           SCF_GUESS ..  # sets the initial guess for the electron density
-          EPS_SCF ..    # is the tolarance for SCF convergence
+          EPS_SCF ..    # is the tolerance for SCF convergence
           MAX_SCF ..    # maximum number of inner SCF steps
           &OT     # Orbital transform minimiser scheme
             ..
@@ -292,12 +295,13 @@ than others. This can be done by adding a `&PRINT` section within the input file
 
 Again this has the options `SILENT, LOW, MEDIUM, HIGH` and also allows you to specify a filename
 for the output and how regularly it is written to.
+TODO: The example above doesn't use any of `SILENT, LOW, MEDIUM, HIGH`
 
 #### Units
 
 The default units for CP2K can be quite unfamiliar. In a lot of cases atomic units
 are the default. Always check what the default units are if you specifying a 
-parameter otherwise its value may be misinterpretted.
+parameter otherwise its value may be misinterpreted.
 Alternatively you can add a unit descriptor to the input file to tell CP2K what 
 the units are.
 
@@ -308,7 +312,7 @@ CUTOFF [eV] 400
 You can check [the manual](https://manual.cp2k.org/cp2k-8_2-branch/units.html)
 to see what units are valid for different physical values.
 
-#### Using varaibles
+#### Using variables
 
 Variables in the input file can be defined with:
 ```
@@ -377,9 +381,9 @@ Typing `module avail cp2k` gives a list of the available CP2K versions.
 module load cp2k/8.1
 ```
 
-Will make the CP2K exectuables for version 8.1 available.
+Will make the CP2K executables for version 8.1 available.
 
-CP2K has two executables for running in parallel. `cp2k.popt` is the parallelised exectuable for running MPI-only 
+CP2K has two executables for running in parallel. `cp2k.popt` is the parallelised executable for running MPI-only 
 (e.g. no OpenMP/threading). `cp2k.psmp` is the mixed mode parallelised MPI+OpenMP executable. Since version 7.1
 `cp2k.popt` is a symbolic link of `cp2k.psmp` with a single thread. In this tutorial we will be using `cp2k.psmp`
 for the practical exercises.
@@ -454,7 +458,7 @@ After this a breakdown of the energy contributions is usually printed.
 #### Restart wavefunction files
 
 Wavefunction files are binary files that contain the wavefunctions obtained from the most recent SCF steps. 
-They are named with the project_name preceeding `‘-RESTART.wfn’`. One is written every SCF step, 
+They are named with the project_name preceding `‘-RESTART.wfn’`. One is written every SCF step, 
 and if a wavefuntion file of the same name already exists the older version is moved to 
 `NAME-RESTART.wfn.bak-1`, rather than overwritten. This is done for up to three files and so 
 you may see the following files, where the third backup (bak-3) is the oldest.
@@ -467,7 +471,7 @@ NAME-RESTART.wfn.bak-3
 ```
 
 Wavefunction restarts are used when restarting a calculation in order to act as a 
-guide for the first SCF step to speed up the calculation. In this case  the SCF_GUESS should be set to ‘restart’
+guide for the first SCF step to speed up the calculation. In this case  the `SCF_GUESS` should be set to ‘restart’
 and the restart file name should be given in the SCF section, or the project names should be the same. Care should 
 be taken that the wavefunction is a suitable guess for the SCF calculation otherwise 
 it may not converge or take longer to.
@@ -486,7 +490,7 @@ Run the calculation using the job script provided.
 sbatch cp2k-job-1.sh
 ```
 
-The output should be writen to the slurm-XXXX.out file (it will finish very quickly). 
+The output should be written to the slurm-XXXX.out file (it will finish very quickly). 
 Open this file e.g.
 
 ```
@@ -560,22 +564,22 @@ settings.
 
 ### 2.1 Using our previous water input
 
-In this execise you will converge the energy cutoff for the same system as in the previous 
-execise.
+In this exercise you will converge the energy cutoff for the same system as in the previous 
+exercise.
 
-This execise is adapted from the exercise [here](https://www.cp2k.org/events:2018_summer_school:converging_cutoff).
+This exercise is adapted from the exercise [here](https://www.cp2k.org/events:2018_summer_school:converging_cutoff).
 This version is less detailed, if you would like more information you can refer
 to the original.
 
 Quickstep uses a multi-grid system for mapping the product Gaussians onto the real space grid(s).
 The energy cutoff sets the planewave cutoff in Ry. A larger cutoff translates to a finer multi-grid.
-If the grid is too coarse then the calcaultion may become innaccurate. Howver increasing the CUTOFF
-increases the time spent converging the SCF, as the grid becomes finer, so using an arbitarily large
+If the grid is too coarse then the calculation may become inaccurate. Howver increasing the CUTOFF
+increases the time spent converging the SCF, as the grid becomes finer, so using an arbitrarily large
 CUTOFF is not ideal. Choosing the correct value for the CUTOFF is  an important step when running 
 a CP2K calculation and should usually be done whenever changing the system set up or basis set.
 
 To converge the CUTOFF you will perform a series of calculations to
-find the total energy with different values for the CUTOFF in the input file and then check the convergene of the 
+find the total energy with different values for the CUTOFF in the input file and then check the convergence of the 
 energy. We will use the following CUTOFF values to give a good range:- `100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200`
 For ease of use the set up of the input files will be done with a script - `gen_cutoff.sh`. All this does is create
 directories for each CUTOFF value and fill them with the input file where the CUTOFF value has been correctly
@@ -585,7 +589,7 @@ If you go to the exercise 2 directory you should see 4 files:
 
 - `gen_cutoff.sh` - this is a bash script for generating input files and directories for different cutoff values
 - `input_H2O_temp.inp` - this is a template for the input files where the CUTOFF can be easily changed
-- `execise2-RESTART.wfn` - this is the converged SCF wavefunction which willl be used as a guess for the SCF in each calculation
+- `execise2-RESTART.wfn` - this is the converged SCF wavefunction which will be used as a guess for the SCF in each calculation
 - `cp2k-job-2.sh` - this is a job script that will run the calculations in each directory and extract information from the outputs
 
 
@@ -617,7 +621,7 @@ run.
 
 You may also want to look at the difference in the `SUM OF ATOMIC FORCES` in
 each output to see how this changes with the `CUTOFF`. The difference in the forces
-on the atoms illustrates how important chosing the a good value for the `CUTOFF` is.
+on the atoms illustrates how important choosing the a good value for the `CUTOFF` is.
 
 ### 2.2 Changing the XC functionals (optional)
 
