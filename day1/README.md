@@ -126,7 +126,7 @@ download the materials, and go to the folder containing the files for the first 
 
 ```
 auser@uan02:~> cd /work/ta042/ta042/auser
-auser@uan02:/work/ta042/ta042/auser> git clone git@git.ecdf.ed.ac.uk:htetlow/intro_to_cp2k.git
+auser@uan02:/work/ta042/ta042/auser> git clone https://git.ecdf.ed.ac.uk/htetlow/intro_to_cp2k.git
 auser@uan02:/work/ta042/ta042/auser> cd intro_to_cp2k/cp2k-practical-files/exercise1
 auser@uan02:/work/ta042/ta042/auser/cp2k-practical-files/exercise1> ls
 cp2k-job-1.sh input_H2O.inp
