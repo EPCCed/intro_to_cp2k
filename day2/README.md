@@ -349,18 +349,23 @@ There are a number of tutorials on the CP2K website that cover some more
 advanced topics, however it is fairly tricky to find what you might need.
 Here are some of my favourites:
 
-* Hybrid functionals
+* Hybrid functionals (PBE0) https://www.cp2k.org/exercises:2017_uzh_cp2k-tutorial:hybrid 
 * NEB
 * ADMM
 
 ### Regression tests
 
 The regression tests are part of the CP2K source code
-These cover inputs to test all the functionality in the code and these
+These cover inputs to test nearly all the functionality in the code and these
 may be used as a way to see input set ups for more niche options.
 
 ### CP2K Google group
 
+This is a place to ask questions. However you may have some luck searching 
+previously answered questions first.
+
 ### Bioexcel QM/MM BPG
+
+The bioexcel QM/MM was written as a guide for doing QM/MM simulations with CP2K. 
 
 
