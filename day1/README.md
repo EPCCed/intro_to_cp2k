@@ -38,10 +38,10 @@ TODO: Add etherpad link
 * What is your experience level with CP2K?
 * Have you used any other similar packages (VASP, Quantum Espresso, CASTEP, Siesta)?
 * What is your research area?
+* What do you want to learn from this course?
 
 ### CP2K main features
 
-TODO: edit this
 
 #### Quickstep
 
@@ -50,8 +50,6 @@ its augmented extension (GAPW). Central in this approach is a dual basis of
 atom centred Gaussian orbitals and plane waves (regular grids). The former
 is used to represent the wave functions and e.g. the Kohn-Sham matrix, whereas the
 latter is used to represent the electronic density
-
-
 
 
 #### Orbital transform method
@@ -63,47 +61,50 @@ based methods, and is guaranteed to converge. Even though it scales cubically
 with system size, approx. 1000 atoms (20k-30k basis functions) can be studied 
 fairly easily.
 
-#### Hartree Fock exchange
 
-The Hartree Fock exchange is use in hybrid XC methods where
-it is combined with GGA methods in order to improve the accuracy of the XC contribution.
-This is used for PBE0 and B3LYP and also double-hybrid functionals such as
-B2PLYP and B2GPPLYP which use the PT2 correlation contribution additionally.
-The HFX requires use of the libint library.
 
 
 #### XC functionals
 
 There are a wide range of functionals for representing the exchange-correlation
-functionals each with different levels of accuracy (the XC functional contains
+functional each with different levels of accuracy (the XC functional contains
 approximations for the exact functionals for exchange and correlation).
 
 Available functionals flavours include LDA, GGA, and meta-GGA. Many others provided 
 by (LibXC)[https://www.tddft.org/programs/libxc/].
 
+#### Hartree Fock exchange
+
+The Hartree Fock exchange for use in hybrid XC methods.
+This can be used for PBE0 and B3LYP and also double-hybrid functionals such as
+B2PLYP and B2GPPLYP which use the PT2 correlation contribution additionally.
+The HFX requires use of the [libint](https://github.com/evaleev/libint) library.
+
 ####  Optimisation
 
-Global and  geometry optimisation
+Geometry and cell optimisation.
 
 #### Molecular dynamics
 
-Born Orpenheimer molecule dynamics, with a range of ensembles.
+Born Orpenheimer molecular dynamics, with a wide range of MD ensembles.
 
 #### QM/MM
 
 Classical molecular mechanics with a quantum mechanical QM region of interest.
+QM/MM in CP2K is fully periodic.
 
-#### Classical forcefields FIST
+#### Classical forcefields (FIST)
 
 Classical forcefields in the CHARMM and AMBER formats for doing classical MD.
 
 #### The nudged elastic band method 
 
-
+For finding transistion states and minimum energy pathways. Climbing-image
+and improved tangent NEB are available.
 
 #### Metadynamics
 
-Available in inbuilt in CP2K or through Plumed.
+Available as inbuilt in CP2K or through [Plumed](https://www.plumed.org).
 
 
 ## Exercise 0: Logging on to ARCHER2 and setting up
@@ -488,7 +489,7 @@ it may not converge or take longer to.
 Run the calculation using the job script provided.
 
 ```
-sbatch cp2k-job-1.sh
+sbatch --reservation=ta042_221 cp2k-job-1.sh
 ```
 
 The output should be written to the slurm-XXXX.out file (it will finish very quickly). 
@@ -502,13 +503,13 @@ At the end of the calculation a timing report is given indicating it has finishe
 You should also see a message that the SCF has converged (this will be further
 up in the output).
 
-*How many steps does it take to converge the SCF run?*
+**How many steps does it take to converge the SCF run?**
 
 You will note that the SCF has been split into two parts. This is because it reaches
 the limit of the `MAX_SCF` steps for the inner cycle and then move onto to a second
 outer SCF step.
 
-*What is the total run time?*
+**What is the total run time?**
 
 This is printed at the top of the timing report e.g.
 
@@ -533,7 +534,7 @@ been written.
 
 Change the `PRINT_LEVEL` from `LOW` to `MEDIUM` and then run the calculation again.
 
-*What is added in the output?*
+**What is added in the output?**
 
 
 ### 1.3: Restarting with SCF wavefunction
@@ -547,13 +548,15 @@ Also change the line `SCF_GUESS ATOMIC` to `SCF_GUESS RESTART`
 This sets the input file to use the previously generated SCF wave functions
 as a guess for the SCF calculation. Run the calculation again.
 
-*How many steps does it take to converge the SCF run now?*
+**How many steps does it take to converge the SCF run now?**
 
-*What is the total run time now?*
+**What is the total run time now?**
 
 Using the restart files as a guess
-for the SCF calculation will usually speed up similar subsequent calculations as
-... This is useful when you want to repeat a calculation with changing some of the
+for the electron density in the SCF calculation will usually speed up similar 
+subsequent calculations. 
+This is useful when you want to restart a calculation or repeat a calculation 
+with changing some of the
 settings.
 
 
@@ -579,7 +582,7 @@ increases the time spent converging the SCF, as the grid becomes finer, so using
 CUTOFF is not ideal. Choosing the correct value for the CUTOFF is  an important step when running 
 a CP2K calculation and should usually be done whenever changing the system set up or basis set.
 
-To converge the CUTOFF you will perform a series of calculations to
+To converge the `CUTOFF` you will perform a series of calculations to
 find the total energy with different values for the CUTOFF in the input file and then check the convergence of the 
 energy. We will use the following CUTOFF values to give a good range:- `100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200`
 For ease of use the set up of the input files will be done with a script - `gen_cutoff.sh`. All this does is create
@@ -606,7 +609,7 @@ cat cutoff_100Ry/input.inp
 Now submit the job script.
 
 ```
-sbatch cp2k-job-2.sh
+sbatch --reservation=ta042_221 cp2k-job-2.sh
 ```
 
 CP2K will run in each directory in order with an output file is produced in each.
@@ -616,9 +619,9 @@ total energies into `energies.out`.
 Once the job completes this file should be fully populated with data from each
 run. 
 
-*How  does the CUTOFF vs. total energy change?*
+**How  does the CUTOFF vs. total energy change?**
 
-*What might be a suitable CUTOFF value to use?*
+**What might be a suitable CUTOFF value to use?**
 
 You may also want to look at the difference in the `SUM OF ATOMIC FORCES` in
 each output to see how this changes with the `CUTOFF`. The difference in the forces
@@ -649,22 +652,23 @@ potential for the XC functional.
 
 Repeat the steps as in the previous exercise.
 
-*How does the total energy vs. CUTOFF change now?*
+**How does the total energy vs. CUTOFF change now?**
 
-*Why might this converge at a lower energy?*
+**Why might this converge at a lower energy?**
 
 
 ## CP2K code base
 
-CP2K is written in Fortran 2008 and can be run efficiently in parallel using a combination
-of multi-threading, MPI, and CUDA. It is freely available under the GPL license.
-
-CP2K uses the dbcsr library for sparse matrix-matrix multiplication.
-FFTW for FFTs
-
+* CP2K is written in Fortran 2008 and can be run efficiently in parallel using a combination
+of multi-threading, MPI, and CUDA.
+* CP2K uses the dbcsr library for sparse matrix-matrix multiplication and the FFTW
+library for FFTs
 * MPI Parallelism is done over the real space grids.
 * Many subroutines make use of OpenMP threading - FFTs, collocate and integrate routines
 * There is GPU offloading in dbscr, collocate and integrate routines
 * Additional libraries can be used for performance - ELPA, libxsmm, libgrid
 
 ### Build instructions
+
+Build instructions for CP2K on ARCHER2 (and other machines) can be found
+[here](https://github.com/hpc-uk/build-instructions/tree/main/apps/CP2K)
