@@ -3,11 +3,11 @@
 ## Exercise 3: Geometry Optimisation
 
 In this exercse we will optimise the geometry of a single water molecule. 
-Geomtrey optimisation can be used to find the minimum energy configuration for a
-particuler atomic system also known as relaxing the structure. This is done by minimising 
+Geometry optimisation can be used to find the minimum energy configuration for a
+particular atomic system, also known as relaxing the structure. This is done by minimising 
 the forces on the atoms.
 
-The input file is similar to those in the previuos exercises, we have removed all
+The input file is similar to those in the previous exercises, we have removed all
 but one of the water molecules. To do the geometry optimisation the `RUN_TYPE` is 
 changed to `GEO_OPT` and the `MOTION` section with `GEO_OPT` settings is added.
 
@@ -258,7 +258,7 @@ H2O-256  |    2    |               |
 H2O-256  |    4    |               |
 
 To do list you will just need to edit the provided job script to select the 
-input file and also change the `SBATCH nodes=` parameter at the top.
+input file and also change the `#SBATCH nodes=` parameter at the top.
 On ARCHER2 there are 128 cores per node.
 
 The run time can be easily found once the run completes 
@@ -282,14 +282,14 @@ Speed up = Time_1/Time_n
 
 
 Usually we want to select the number of nodes that we run on carefully as to not 
-be inefficent with the resources. For example there is usually no use running a small 
+be inefficient with the resources. For example there is usually no use running a small 
 system with a small amount of computational work to be done
 on many many nodes as there will be limited improvement in the performance
 due to the dominance of the serial overheads at this scale. Ideally when using a new
 system or new set up you should perform scaling tests to determine the optimum 
 number of nodes to use.
 
-For the above systems how many nodes would you choose to use?
+**For the above systems how many nodes would you choose to use?**
 
 ### 5.2 Hybrid MPI+OpenMP
 
@@ -312,7 +312,7 @@ Sensible choices for the number of threads are therefore 1 (single-threaded), 2,
 To use more than one thread you will need to edit the job script. The number of
 cpus-per-process should be set to the number of threads. The tasks-per-node then
 needs to be set to ensure that the whole node is used. For example
-for 4 threads 128/4 = 32 tasks.
+for 4 threads on a full ARCHER2 node there are 128/4 = 32 tasks.
 
 Aim to fill in the following table.
 
@@ -324,6 +324,8 @@ Aim to fill in the following table.
 |    8    |               |
 |    16   |               |
 
+**How is the run time affected by the number of threads used?**
+
 ## Input building blocks
 
 
@@ -331,15 +333,34 @@ Aim to fill in the following table.
 ## Resources
 
 CP2K has a wide variety of features that can be hard to find documentation and
-appropirate resources for.
+appropirate resources for. Below is a list of resources where you can go to
+get help in the future.
 
 
 ### How to guides on the website
 
+There are a selection of how to guides on the CP2K website here.
+These cover common set up scenerios and  the basics such as force/energy
+calculations, geometry optimisation etc.
+
+### Tutorials on the website
+
+There are a number of tutorials on the CP2K website that cover some more 
+advanced topics, however it is fairly tricky to find what you might need.
+Here are some of my favourites:
+
+* Hybrid functionals
+* NEB
+* ADMM
+
 ### Regression tests
+
+The regression tests are part of the CP2K source code
+These cover inputs to test all the functionality in the code and these
+may be used as a way to see input set ups for more niche options.
 
 ### CP2K Google group
 
 ### Bioexcel QM/MM BPG
 
-### CP2K build instructions
+
