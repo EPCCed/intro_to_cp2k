@@ -326,9 +326,6 @@ Aim to fill in the following table.
 
 **How is the run time affected by the number of threads used?**
 
-## Input building blocks
-
-
 
 ## Resources
 
@@ -339,7 +336,8 @@ get help in the future.
 
 ### How to guides on the website
 
-There are a selection of how to guides on the CP2K website here.
+There are a selection of how to guides on the CP2K website 
+[here](https://www.cp2k.org/howto)
 These cover common set up scenerios and  the basics such as force/energy
 calculations, geometry optimisation etc.
 
@@ -349,13 +347,15 @@ There are a number of tutorials on the CP2K website that cover some more
 advanced topics, however it is fairly tricky to find what you might need.
 Here are some of my favourites:
 
-* Hybrid functionals (PBE0) https://www.cp2k.org/exercises:2017_uzh_cp2k-tutorial:hybrid 
+* Hybrid functionals and ADMM (PBE0) - https://www.cp2k.org/exercises:2017_uzh_cp2k-tutorial:hybrid 
 * NEB
-* ADMM
+
 
 ### Regression tests
 
-The regression tests are part of the CP2K source code
+The regression tests are part of the CP2K source code and can be found 
+[here](https://github.com/cp2k/cp2k/tree/support/v8.1/tests).
+
 These cover inputs to test nearly all the functionality in the code and these
 may be used as a way to see input set ups for more niche options.
 
@@ -364,8 +364,19 @@ may be used as a way to see input set ups for more niche options.
 This is a place to ask questions. However you may have some luck searching 
 previously answered questions first.
 
-### Bioexcel QM/MM BPG
+https://groups.google.com/g/cp2k
 
-The bioexcel QM/MM was written as a guide for doing QM/MM simulations with CP2K. 
+Please read the [guidelines](https://www.cp2k.org/howto:gethelp) first.
+
+### Bioexcel QM/MM resources
+
+The bioexcel QM/MM [BPG](https://docs.bioexcel.eu/qmmm_bpg/en/main/index.html) 
+was written as a guide for doing QM/MM simulations with CP2K.
+
+There are also some previous courses on using QM/MM with CP2K
+
+https://www.archer2.ac.uk/training/courses/200609-amber/
+
+https://www.archer2.ac.uk/training/courses/201013-cp2k/
 
 
