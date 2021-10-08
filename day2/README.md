@@ -149,7 +149,7 @@ found [here](https://manual.cp2k.org/trunk/CP2K_INPUT/MOTION/MD.html#ENSEMBLE).
 Here we have chosen an NVE ensemble. Doing an NVE run and checking the energy 
 conservation is a good way to check the system for techincal errors.
 
-TIP: r improve the forces with EPS_SCF and EPS_DEFAULT, increase the cutoff, and reduce the timestep. 
+TIP: To improve the forces with EPS_SCF and EPS_DEFAULT, increase the cutoff, and reduce the timestep. 
 
 We have also added the following to the QS section:
 
@@ -160,7 +160,11 @@ EXTRAPOLATION ASPC
 
 These set how the SCF wave function
 
+As before, to run the simulation on the compute nodes, run:
 
+```
+sbatch cp2k-job-4.sh 
+```
 
 As the simulation runs the usual output files are produced. In addition to those 
 we have seen before the `exercise4-1.ener` file is produced. This contains the 
@@ -201,7 +205,7 @@ printing can mean many files (this is especially bad if your system is large as
 a large amount of data will be produced).
 
 We are going to set the input so that it writes a restart file every 50 steps.
-Add the following into the MOTION section of the input file and run it again.
+Add the following into the `&MOTION` section of the input file and run it again.
 (Please make sure to change the input file name in cp2k-job-4.sh as well or you 
 will run the restart again)
 
