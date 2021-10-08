@@ -149,7 +149,8 @@ found [here](https://manual.cp2k.org/trunk/CP2K_INPUT/MOTION/MD.html#ENSEMBLE).
 Here we have chosen an NVE ensemble. Doing an NVE run and checking the energy 
 conservation is a good way to check the system for techincal errors.
 
-TIP: To improve the forces with EPS_SCF and EPS_DEFAULT, increase the cutoff, and reduce the timestep. 
+TIP: If you have poor energy conservation either reduce EPS_SCF and EPS_DEFAULT,
+increase the cutoff, or reduce the timestep. 
 
 We have also added the following to the QS section:
 
@@ -251,9 +252,6 @@ System   |  Nodes  |  Run time (s) |
 H2O-32   |    1    |               |
 H2O-32   |    2    |               |
 H2O-32   |    4    |               |
-H2O-64   |    1    |               |
-H2O-64   |    2    |               |
-H2O-64   |    4    |               |
 H2O-128  |    1    |               |
 H2O-128  |    2    |               |
 H2O-128  |    4    |               |
