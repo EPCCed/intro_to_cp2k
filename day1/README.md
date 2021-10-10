@@ -33,7 +33,7 @@ the best prediction of the employed method for the electronic ground state energ
 
 ### Attendee questions
 
-TODO: Add etherpad link
+You can access the course etherpad [here](https://pad.archer2.ac.uk/p/211011-intro-cp2k).
 
 * What is your experience level with CP2K?
 * Have you used any other similar packages (VASP, Quantum Espresso, CASTEP, Siesta)?
@@ -97,7 +97,7 @@ Classical forcefields in the CHARMM and AMBER formats for doing classical MD.
 
 #### The nudged elastic band method 
 
-For finding transistion states and minimum energy pathways. Climbing-image
+For finding transition states and minimum energy pathways. Climbing-image
 and improved tangent NEB are available.
 
 #### Metadynamics
@@ -291,7 +291,8 @@ The CP2K manual is available [here](https://manual.cp2k.org/#gsc.tab=0)
 
 A lot of parameters have default values which they are set if no value is given for them in the input file. This may seem handy but it can be
 dangerous to take the default value in a lot of cases as this can lead to inaccurate results. You should question the default values and 
-check that they are suitable for your system. One key value which should always be set for good accuracy is the energy cutoff (link). This
+check that they are suitable for your system. One key value which should always 
+be set for good accuracy is the energy [cutoff](https://www.cp2k.org/howto:converging_cutoff). This
 will be done in the second exercise.
 
 #### Printing
@@ -598,14 +599,14 @@ to the original.
 
 Quickstep uses a multi-grid system for mapping the product Gaussians onto the real space grid(s).
 The energy cutoff sets the planewave cutoff in Ry. A larger cutoff translates to a finer multi-grid.
-If the grid is too coarse then the calculation may become inaccurate. Howver increasing the CUTOFF
+If the grid is too coarse then the calculation may become inaccurate. However increasing the `CUTOFF`
 increases the time spent converging the SCF, as the grid becomes finer, so using an arbitrarily large
-CUTOFF is not ideal. Choosing the correct value for the CUTOFF is  an important step when running 
+`CUTOFF` is not ideal. Choosing the correct value for the `CUTOFF` is  an important step when running 
 a CP2K calculation and should usually be done whenever changing the system set up or basis set.
 
 To converge the `CUTOFF` you will perform a series of calculations to
-find the total energy with different values for the CUTOFF in the input file and then check the convergence of the 
-energy. We will use the following CUTOFF values to give a good range:- `100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200`
+find the total energy with different values for the `CUTOFF` in the input file and then check the convergence of the 
+energy. We will use the following `CUTOFF` values to give a good range:- `100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200`
 For ease of use the set up of the input files will be done with a script - `gen_cutoff.sh`. All this does is create
 directories for each CUTOFF value and fill them with the input file where the CUTOFF value has been correctly
 set. The jobscript `cp2k-job-2.sh` that runs the CP2K jobs also extracts the energies and run times.
