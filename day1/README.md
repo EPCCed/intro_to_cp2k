@@ -62,8 +62,6 @@ with system size, approx. 1000 atoms (20k-30k basis functions) can be studied
 fairly easily.
 
 
-
-
 #### XC functionals
 
 There are a wide range of functionals for representing the exchange-correlation
@@ -71,7 +69,7 @@ functional each with different levels of accuracy (the XC functional contains
 approximations for the exact functionals for exchange and correlation).
 
 Available functionals flavours include LDA, GGA, and meta-GGA. Many others provided 
-by (LibXC)[https://www.tddft.org/programs/libxc/].
+by [LibXC](https://www.tddft.org/programs/libxc/).
 
 #### Hartree Fock exchange
 
@@ -106,6 +104,24 @@ and improved tangent NEB are available.
 
 Available as inbuilt in CP2K or through [Plumed](https://www.plumed.org).
 
+
+#### And many others listed [here](https://www.cp2k.org/features)
+
+## CP2K code base
+
+* CP2K is written in Fortran 2008 and can be run efficiently in parallel using a combination
+of multi-threading, MPI, and CUDA.
+* CP2K uses the dbcsr library for sparse matrix-matrix multiplication and the FFTW
+library for FFTs
+* MPI Parallelism is done over the real space grids.
+* Many subroutines make use of OpenMP threading - FFTs, collocate and integrate routines
+* There is GPU offloading in dbscr, collocate and integrate routines
+* Additional libraries can be used for performance - ELPA, libxsmm, libgrid
+
+### Build instructions
+
+Build instructions for CP2K on ARCHER2 (and other machines) can be found
+[here](https://github.com/hpc-uk/build-instructions/tree/main/apps/CP2K)
 
 ## Exercise 0: Logging on to ARCHER2 and setting up
 
@@ -192,12 +208,17 @@ CP2K scripts require three primary sections (`&GLOBAL`, `&FORCE_EVAL`, and
           &OT     # Orbital transform minimiser scheme
             ..
           &END OT
+          &OUTER_SCF
+              EPS_SCF   # tolerance for the outer SCF (must be smaller or equal to inner EPS_SCF)
+              MAX_SCF   # maximum number of outer SCF steps
+          &END OUTER_SCF
+
        &END SCF
        
        &MGRID      # Realspace multigrid information
        ..
           CUTOFF ..     # is the energy cutoff for plane-waves
-          REL_CUTOFF .. 
+          REL_CUTOFF .. # energy cutoff for reference grid
           NGRIDS ..     # is the number of multigrids to use
        &END MGRID
        
@@ -656,19 +677,38 @@ Repeat the steps as in the previous exercise.
 
 **Why might this converge at a lower energy?**
 
+## Creating your own input file
 
-## CP2K code base
+Important areas to consider when setting up a CP2K calculation from scratch.
 
-* CP2K is written in Fortran 2008 and can be run efficiently in parallel using a combination
-of multi-threading, MPI, and CUDA.
-* CP2K uses the dbcsr library for sparse matrix-matrix multiplication and the FFTW
-library for FFTs
-* MPI Parallelism is done over the real space grids.
-* Many subroutines make use of OpenMP threading - FFTs, collocate and integrate routines
-* There is GPU offloading in dbscr, collocate and integrate routines
-* Additional libraries can be used for performance - ELPA, libxsmm, libgrid
 
-### Build instructions
+1. Your system coordinates and cell dimensions.
+* What is your system are your input coordinates correct?
+* Is your system periodic (crystalline), or a molecule, or surface and are the cell dimensions correct for this?
 
-Build instructions for CP2K on ARCHER2 (and other machines) can be found
-[here](https://github.com/hpc-uk/build-instructions/tree/main/apps/CP2K)
+2. What basis sets and potentials are available for the elements in your system?
+* The files `BASIS_SETS` (or `BASIS_MOLOPT` for molecular structures) are a good place to start.
+* These range in accuracy from SZP-GTH -> DZVP-GTH -> TZVP-GTH -> TZV2P-GTH
+* Use TZVP-GTH or higher for production runs.
+* The potential e.g. `GTH-PBE-q1` should match your choice of XC functional.
+
+3. The SCF set up.
+* The choice of optimiser/minimiser - OT or traditional diagonalisation see - https://www.cp2k.org/events:2018_summer_school:scf_setup
+* Do you need to add smearing? (For metals or large band gap materials)
+* The tolerance set in  `EPS_SCF`?
+* Are there enough steps in `MAX_SCF` for the SCF to converge?
+* Choice of `OUTER_SCF` settings to help with convergence.
+
+4. The choice of XC functional.
+* These range in complexity/accuracy: LDA-> GGA -> metaGGA -> hybrid -> higher order methods
+* GGA is a good starting point. You should check properties before trying higher order methods.
+* Check your potentials match the XC choice.
+
+
+5. Are the `CUTOFF` and `REL CUTOFF` suitable? You can do the convergence check to determine this.
+
+6. Does the SCF converge for a single point energy calculation? Is the energy reasonable?
+
+7. Can you calculate some known property and is the result reasonable?
+e.g. a formation energy, lattice constant.
+
