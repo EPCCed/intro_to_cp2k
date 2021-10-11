@@ -57,7 +57,7 @@ The main topics covered will be:
 
 * 13:00 - Welcome and introduction
 * 13:15 - The CP2K input file and running jobs
-* 13:45 - execise 1: energy calculation
+* 13:45 - exercise 1: energy calculation
 * 14:30 - break
 * 15:00 - exercise 2: converging the energy cutoff
 * 16:00 - close
@@ -65,8 +65,8 @@ The main topics covered will be:
 ### Day 2
 
 * 13:00 - Welcome and introduction
-* 13:10 - execise 3: geometry optimisation
-* 13:45 - execise 4: molecular dynamics
+* 13:10 - exercise 3: geometry optimisation
+* 13:45 - exercise 4: molecular dynamics
 * 14:15 - break
 * 14:45 - exercise 5: parallel performance of CP2K
 * 15:30 - Where next? Making your own inputs and getting help
