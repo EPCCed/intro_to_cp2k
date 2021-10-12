@@ -69,7 +69,7 @@ The main topics covered will be:
 * 13:45 - exercise 4: molecular dynamics
 * 14:15 - break
 * 14:45 - exercise 5: parallel performance of CP2K
-* 15:30 - Where next? Making your own inputs and getting help
+* 15:45 - Where next? Making your own inputs and getting help
 * 16:00 - close
 
 ## Anknowledgements
