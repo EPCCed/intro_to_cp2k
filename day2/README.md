@@ -377,16 +377,16 @@ https://groups.google.com/g/cp2k
 
 Please read the [guidelines](https://www.cp2k.org/howto:gethelp) first.
 
-### Bioexcel QM/MM resources
+### Bioexcel biomolecular QM/MM resources
 
 The bioexcel QM/MM [BPG](https://docs.bioexcel.eu/qmmm_bpg/en/main/index.html) 
 was written as a guide for doing QM/MM simulations with CP2K.
 
 There are also some previous courses on using QM/MM with CP2K
 
-https://www.archer2.ac.uk/training/courses/200609-amber/
+[Preparing to run biomolecular QM/MM simulations with CP2K using AmberTools Online](https://www.archer2.ac.uk/training/courses/200609-amber/)
 
 
-https://www.archer2.ac.uk/training/courses/201013-cp2k/
+[Practical introduction to QM/MM using CP2K for biomolecular modelling](https://www.archer2.ac.uk/training/courses/201013-cp2k/)
 
 
