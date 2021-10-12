@@ -46,7 +46,7 @@ To run the calculation submit the job script. This will take about 2.5 minutes
 to finish.
 
 ```
-sbatch cp2k-job-3.sh
+sbatch --reservation=ta042_222 cp2k-job-3.sh
 ```
 
 As the calculation runs you should see multiple files produced. In addition to
@@ -128,7 +128,7 @@ This energy should be going downwards (we are minimising it).
 Submit this one now! It will take ~4 minutes
 
 To run a MD calculation the run type should be set to MD. The MD settings are 
-given in the MOTION section.
+given in the `MOTION` section.
 
 ```
 &MOTION
@@ -149,7 +149,7 @@ found [here](https://manual.cp2k.org/trunk/CP2K_INPUT/MOTION/MD.html#ENSEMBLE).
 Here we have chosen an NVE ensemble. Doing an NVE run and checking the energy 
 conservation is a good way to check the system for techincal errors.
 
-TIP: If you have poor energy conservation either reduce EPS_SCF and EPS_DEFAULT,
+TIP: If you have poor energy conservation either reduce `EPS_SCF` and `EPS_DEFAULT`,
 increase the cutoff, or reduce the timestep. 
 
 We have also added the following to the QS section:
@@ -159,12 +159,15 @@ EXTRAPOLATION_ORDER 3
 EXTRAPOLATION ASPC
 ```
 
-These set how the SCF wave function
+These set how the wave function is extrapolated between MD steps. The 
+always stable predictor corrector method is used, which prioritises stability.
+The extrapolation order is a paramter used for ASPC method, higher order may be
+more accurate, but less stable.
 
 As before, to run the simulation on the compute nodes, run:
 
 ```
-sbatch cp2k-job-4.sh 
+sbatch --reservation=ta042_222 cp2k-job-4.sh 
 ```
 
 As the simulation runs the usual output files are produced. In addition to those 
@@ -220,7 +223,7 @@ will run the restart again)
   &END PRINT
 ```
 
-You can a similar block to print the [velocities](https://manual.cp2k.org/cp2k-8_2-branch/CP2K_INPUT/MOTION/PRINT/VELOCITIES.html)
+You can add a similar block to print the [velocities](https://manual.cp2k.org/cp2k-8_2-branch/CP2K_INPUT/MOTION/PRINT/VELOCITIES.html)
 
 
 
@@ -234,7 +237,7 @@ parameters. First we will run simulations across mutliple nodes and then use the
 performance results to determine the optimum number of nodes
 to run on, and see how this depends on the size of the system.
 
-In the exercise5 directory you have 4 different input files. 
+In the exercise5 directory you have 3 different input files. 
 
 ```
 H2O-128.inp  H2O-256.inp  H2O-32.inp 
@@ -343,14 +346,17 @@ There are a selection of how to guides on the CP2K website
 These cover common set up scenerios and  the basics such as force/energy
 calculations, geometry optimisation etc.
 
-### Tutorials on the website
+### Exercises on the website
 
 There are a number of tutorials on the CP2K website that cover some more 
 advanced topics, however it is fairly tricky to find what you might need.
-Here are some of my favourites:
+Here are some links to particilar exericses:
 
+* MD of water (with GLE thermostat) - https://www.cp2k.org/exercises:2016_summer_school:aimd
 * Hybrid functionals and ADMM (PBE0) - https://www.cp2k.org/exercises:2017_uzh_cp2k-tutorial:hybrid 
-* NEB
+* Nudged elastic band method - https://www.cp2k.org/exercises:2016_uzh_cmest:path_optimization_neb
+* QM/MM - https://www.cp2k.org/exercises:2016_summer_school:qmmm
+* NEB and metadynamics - https://www.cp2k.org/exercises:2015_cecam_tutorial:neb
 
 
 ### Regression tests
@@ -359,7 +365,8 @@ The regression tests are part of the CP2K source code and can be found
 [here](https://github.com/cp2k/cp2k/tree/support/v8.1/tests).
 
 These cover inputs to test nearly all the functionality in the code and these
-may be used as a way to see input set ups for more niche options.
+may be used as a way to see input set ups for more niche options. Be wary of 
+the paramters set here as they may not be to a production standard.
 
 ### CP2K Google group
 
@@ -378,6 +385,7 @@ was written as a guide for doing QM/MM simulations with CP2K.
 There are also some previous courses on using QM/MM with CP2K
 
 https://www.archer2.ac.uk/training/courses/200609-amber/
+
 
 https://www.archer2.ac.uk/training/courses/201013-cp2k/
 
