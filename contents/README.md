@@ -1088,10 +1088,10 @@ Please read the [guidelines](https://www.cp2k.org/howto:gethelp) first.
 
 ### BioExcel biomolecular QM/MM resources
 
-The bioexcel QM/MM [BPG](https://docs.bioexcel.eu/qmmm_bpg/en/main/index.html) 
-was written as a guide for doing QM/MM simulations with CP2K.
+The BioExcel [Best Practice Guide on Biomolecular QM/MM with CP2K and GROMACS](https://docs.bioexcel.eu/qmmm_bpg/en/main/index.html) 
+was written as a guide for doing QM/MM simulations with CP2K (including with GROMACS).
 
-There are also some previous courses on using QM/MM with CP2K
+There are also some previous ARCHER2 courses on using QM/MM with CP2K:
 
 [Preparing to run biomolecular QM/MM simulations with CP2K using AmberTools Online](https://www.archer2.ac.uk/training/courses/200609-amber/)
 
