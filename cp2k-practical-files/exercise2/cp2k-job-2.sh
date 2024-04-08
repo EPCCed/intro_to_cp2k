@@ -1,26 +1,25 @@
 #!/bin/bash
 
-#SBATCH --job-name=CP2K_test
+#SBATCH --job-name=job2
 #SBATCH --nodes=1
 #SBATCH --tasks-per-node=128
 #SBATCH --cpus-per-task=1
 #SBATCH --time=00:20:00
-
-#SBATCH --account=ta042
+#SBATCH --account=ta154
 #SBATCH --partition=standard
-#SBATCH --qos=standard
-#SBATCH --export=all
+#SBATCH --export=none
 
 # Load the relevant CP2K module
+module load cp2k/cp2k-2023.2 
+
 # Ensure OMP_NUM_THREADS is consistent with cpus-per-task above
-# Launch the executable
+export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 
-module load epcc-job-env
-module load cp2k/8.1
-
-
-export OMP_NUM_THREADS=1
+# Set thread affinity as recommended
 export OMP_PLACES=cores
+
+# Ensure cpus-per-task are passed to srun
+export SRUN_CPUS_PER_TASK=$SLURM_CPUS_PER_TASK
 
 cutoffs="100 200 300 400 500 600 700 800 900 1000 1100 1200"
 
