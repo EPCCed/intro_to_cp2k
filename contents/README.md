@@ -60,7 +60,7 @@ functional each with different levels of accuracy (the XC functional contains
 approximations for the exact functionals for exchange and correlation).
 
 Available functionals flavours include LDA, GGA, and meta-GGA. Many others provided 
-by [LibXC](https://www.tddft.org/programs/libxc/).
+by [LibXC](https://github.com/ElectronicStructureLibrary/libxc).
 
 #### Hartree Fock exchange (HFX)
 
